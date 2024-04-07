@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "fdf.h"
+// #include "fdf.h"
 
 typedef struct {
     float x, y, z;
@@ -48,4 +48,64 @@ int main() {
     }
 
     return 0;
+}
+
+
+//==========================================================================================
+// #include <stdio.h>
+// #include <math.h>
+
+// typedef struct {
+//     float x, y, z;
+// } Point3D;
+
+// // Function to rotate a point around the X axis
+// Point3D rotateX(Point3D point, float angle) {
+//     float sinAngle = sin(angle);
+//     float cosAngle = cos(angle);
+//     Point3D rotatedPoint;
+//     rotatedPoint.x = point.x;
+//     rotatedPoint.y = point.y * cosAngle - point.z * sinAngle;
+//     rotatedPoint.z = point.y * sinAngle + point.z * cosAngle;
+//     return rotatedPoint;
+// }
+
+// // Function to rotate a point around the Y axis
+// Point3D rotateY(Point3D point, float angle) {
+//     float sinAngle = sin(angle);
+//     float cosAngle = cos(angle);
+//     Point3D rotatedPoint;
+//     rotatedPoint.x = point.x * cosAngle + point.z * sinAngle;
+//     rotatedPoint.y = point.y;
+//     rotatedPoint.z = -point.x * sinAngle + point.z * cosAngle;
+//     return rotatedPoint;
+// }
+
+// // Function to rotate a point around the Z axis
+// Point3D rotateZ(Point3D point, float angle) {
+//     float sinAngle = sin(angle);
+//     float cosAngle = cos(angle);
+//     Point3D rotatedPoint;
+//     rotatedPoint.x = point.x * cosAngle - point.y * sinAngle;
+//     rotatedPoint.y = point.x * sinAngle + point.y * cosAngle;
+//     rotatedPoint.z = point.z;
+//     return rotatedPoint;
+// }
+
+// int main() {
+//     // Define a point
+//     Point3D point = {1, 0, 0};
+
+//     // Rotate around X axis by 45 degrees
+//     point = rotateX(point, M_PI_4);
+
+//     // Rotate around Y axis by 30 degrees
+//     point = rotateY(point, M_PI / 6);
+
+//     // Rotate around Z axis by 60 degrees
+//     point = rotateZ(point, M_PI / 3);
+
+//     printf("Rotated point: (%f, %f, %f)\n", point.x, point.y, point.z);
+
+//     return 0;
 }
