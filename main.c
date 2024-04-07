@@ -71,34 +71,6 @@ void	draw_mo3ayan(t_data *img, int l3ard, int tol, t_point point)
 		i++;
 	}
 
-
-}
-
-int	ft_power(int nbr, int power)
-{
-	int i = 0;
-	int r = 1;
-	while (i < power)
-	{
-		r *= nbr;
-		i++;
-	}
-	return (r);
-}
-
-int ft_abs(int nbr)
-{
-	return (((nbr >= 0) - (nbr < 0 )) * nbr);
-}
-
-
-
-int calc_dist(int x, int y, t_point point)
-{
-	int r;
-
-	r = sqrt(ft_power(ft_abs(x - point.x), 2) + ft_power(ft_abs(y - point.y), 2));
-	return (r);
 }
 
 void	draw_circle(t_data *img, int cho3a3, t_point point)
@@ -131,7 +103,6 @@ void	draw_circle(t_data *img, int cho3a3, t_point point)
 		}
 		i++;
 	}
-
 }
 
 int	draw(int button, int x, int y, void *ptr)
@@ -174,7 +145,7 @@ int	handle_keys(int keycode, t_vars *vars)
 	{
 		x+=10;
 	}
-	mlx_put_image_to_window(vars->mlx, vars->win, vars->data->img, x, y);
+	mlx_put_image_to_window(vars->mlx, vars->win, (*vars).data.img, x, y);
 	printf("%d\n", keycode);
 	return (0);
 }
@@ -184,24 +155,20 @@ int	handle_keys(int keycode, t_vars *vars)
 
 // 2 == d
 
-void	draw_map(t_vars *vars,int **map, int height, int width)
+void	draw_map(t_vars *vars, int height, int width)
 {
 	t_point	position;
 	int i;
 	int	j;
-	
-	(void)map;
 
-	i = 10;
-	while (i < height + 10)
+	i = 0;
+	while (i < height)
 	{
-		j = 10;
-		position.y = i * 20;
-		while (j < width + 10)
+		j = 0;
+		while (j < width)
 		{
-			position.x = j * 20;
-			draw_circle(vars->data, 1, position);
-			printf("write pixel to x==%d | y==%d\n", position.x, position.y);
+			//The general equation of a sphere is: (x - a)² + (y - b)² + (z - c)² = r²
+			//equation of plane is : a(x  - x0) + b(y - y0) + c(z - z0) = 0
 			j++;
 		}
 		i++;
@@ -211,23 +178,31 @@ void	draw_map(t_vars *vars,int **map, int height, int width)
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->data->img, 0, 0);
 }
 
-void	fdf(int **map, int height, int width)
+t_vars	init_vars(int **map, int height, int width)
 {
-	t_data	data;
-	// t_point point;
+	t_img_data	data;
 	t_vars vars;
- 
-	
+
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, width * 50 , height * 50, "fdf");
 	data.img = mlx_new_image(vars.mlx, width * 50, height * 50);
 	data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
-
-	vars.data = &data;
-// 	mlx_hook(vars.win, 4, 1L<<0, draw, &vars);
+	vars.data = data;
+	vars.map = map;
 	mlx_hook(vars.win, 2, 1L<<0, handle_keys, &vars);
+	vars.width = width;
+	vars.height = height;
+	return (vars);
+}
 
-	draw_map(&vars,map, height, width);
+void	fdf(int **map, int height, int width)
+{
+	// t_point point;
+	t_vars vars;
+ 
+	vars = init_vars(height, width);
+
+	draw_map(&vars, height, width);
 	mlx_loop(vars.mlx);
 }
 
