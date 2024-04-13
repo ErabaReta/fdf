@@ -1,12 +1,13 @@
 #ifndef FDF_H
 # define FDF_H
 
-#include <mlx.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include<math.h>
-#include "get_next_line/get_next_line.h"
-
+# include <mlx.h>
+# include <stdlib.h>
+# include <fcntl.h>
+# include<math.h>
+# include "get_next_line/get_next_line.h"
+# define WINDOW_HEIGHT 500
+# define WINDOW_WIDTH 500
 //===========================
 typedef struct	s_img_data {
 	void	*img;
@@ -41,7 +42,8 @@ typedef struct	s_vars {
 	void		*mlx;
 	void		*win;
 	t_img_data	data;
-	t_matrix	**shape;
+	t_matrix	**shape_3d;
+	t_matrix	**shape_2d;
 }				t_vars;
 //===========================
 typedef struct s_camera	{
@@ -60,5 +62,6 @@ int	ft_power(int nbr, int power);
 int ft_abs(int nbr);
 int calc_dist(int x, int y, t_2d_point point);
 char	matrix_is_valid(t_matrix matrix);
-
+//=
+float	**new_value(int x, int y, int z, int dimension);
 #endif
