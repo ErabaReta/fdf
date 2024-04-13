@@ -160,7 +160,7 @@ t_3d_point viewpoint = {0, 0, 0};
 
 
 // Function to project a 3D point to a 2D point
-t_2d_point projectPoint(t_3d_point point3d) {
+t_2d_point project_point(t_3d_point point3d) {
 
 // Define projection matrix (simple perspective projection)
 float projection_matrix[3][3] = {
@@ -178,18 +178,24 @@ float projection_matrix[3][3] = {
     y_proj /= z_proj;
 
     // Create 2D point
-    t_2d_point point2d = {x_proj * 50 + 100, y_proj * 50 + 100};
+    t_2d_point point2d = {x_proj * 100 +  200, y_proj * 100 + 200};
     return point2d;
 }
 
-void	draw_map(t_vars *vars)
+void	shape_3d_to_2d(t_vars	*vars)
 {
 	t_2d_point	point2d;
 	t_3d_point	point3d;
-	int i;
-	int	j;
+	int 		i;
+	int			j;
 
-
+	vars->shape_2d = (t_matrix **)malloc(sizeof(t_matrix *) * (vars->height));
+	i = 0;
+	while (i < vars->height)
+	{
+		vars->shape_2d[i] = (t_matrix *)malloc(sizeof(t_matrix) * (vars->width));
+		i++;
+	}
 	i = 0;
 	while (i < vars->height)
 	{
@@ -198,32 +204,117 @@ void	draw_map(t_vars *vars)
 		{
 			//The general equation of a sphere is: (x - a)² + (y - b)² + (z - c)² = r²
 			//equation of plane is : a(x  - x0) + b(y - y0) + c(z - z0) = 0
-			point3d.x = vars->shape[i][j].value[0][0] + 10;
-			point3d.y = vars->shape[i][j].value[1][0] + 10;
-			point3d.z = vars->shape[i][j].value[2][0] + 10;
-			point2d = projectPoint(point3d);
+			point3d.x = vars->shape_3d[i][j].value[0][0] + 10;
+			point3d.y = vars->shape_3d[i][j].value[1][0] + 10;
+			point3d.z = vars->shape_3d[i][j].value[2][0] + 10;
+			point2d = project_point(point3d);
 			printf("the 3d point x = %f , y = %f ,  z = %f turn into 2d point x = %d ,  y = %d \n", point3d.x, point3d.y, point3d.z, point2d.x, point2d.y);
-			draw_circle(&(vars->data), 1, point2d);
+			(vars->shape_2d[i][j]).value = new_value(point2d.x, point2d.y, 0, 2);
 			j++;
 		}
 		i++;
 	}
-	// printf("width == %d | height == %d\n", width, height);
-	// printf("window's width == %d | window's height == %d\n", width * 50, height * 50);
+}
+
+int	ft_min(int nbr1, int nbr2)
+{
+	if (nbr1 >= nbr2)
+		return (nbr2);
+	return (nbr1);
+}
+
+int	ft_max(int nbr1, int nbr2)
+{
+	if (nbr1 >= nbr2)
+		return (nbr1);
+	return (nbr2);
+}
+
+void	line_between_2points(t_vars	*vars, t_2d_point point1, t_2d_point point2)
+{
+	int	x;
+	int	y;
+
+	y = ft_min(point1.y, point2.y);
+	while (y <= ft_max(point1.y, point2.y))
+	{
+		x = ft_min(point1.x, point2.x);
+		while (x <= ft_max(point1.x, point2.x))
+		{
+			// if (calc_dist(x, y, point1) + calc_dist(x, y, point2) == calc_dist(point1.x, point1.y, point2))  
+			// (y -y1) =[(y2 - y1) / (x2 - x1)] (x - x1) 
+			if ((y - point1.y) * (point2.x - point1.x) == (point2.y - point1.y) * (x - point1.x ))
+				my_mlx_pixel_put(&(vars->data), x, y, 0x00FF0000);
+			x++;
+		}
+		y++;
+	}
+}
+
+
+void	draw_lines(t_vars *vars, int i, int j)
+{
+	t_2d_point point1;
+	t_2d_point point2;
+
+	point1.x = vars->shape_2d[i][j].value[0][0];
+	point1.y = vars->shape_2d[i][j].value[1][0];
+	if (i + 1 < vars->height)
+	{
+		point2.x = vars->shape_2d[i + 1][j].value[0][0];
+		point2.y = vars->shape_2d[i + 1][j].value[1][0];
+		line_between_2points(vars, point1, point2);
+	}
+	if (j + 1 < vars->width)
+	{
+		point2.x = vars->shape_2d[i][j + 1].value[0][0];
+		point2.y = vars->shape_2d[i][j + 1].value[1][0];
+		line_between_2points(vars, point1, point2);
+		draw_lines(vars, i, j + 1);
+	}
+}
+
+void	draw_map(t_vars *vars)
+{
+	int	i;
+	int	j;
+	t_2d_point	point2d;
+
+
+	shape_3d_to_2d(vars);//
+	i = 0;
+	while (i < vars->height)
+	{
+		j = 0;
+		while (j < vars->width)
+		{
+			point2d.x = vars->shape_2d[i][j].value[0][0];
+			point2d.y = vars->shape_2d[i][j].value[1][0];
+			draw_circle(&(vars->data), 2, point2d);
+			// my_mlx_pixel_put(&(vars->data), point2d.x, point2d.y, 0x00FFFFFF);
+			j++;
+		}
+		i++;
+	}
+	i = 0;
+	while (i < vars->height)
+	{
+		draw_lines(vars, i++, 0);
+	}
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->data.img, 0, 0);
 }
 
-t_vars	init_vars(t_matrix **shape, int height, int width)
+t_vars	init_vars(t_matrix **shape_3d, int height, int width)
 {
 	t_img_data	data;
 	t_vars vars;
 
 	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, 500 , 500, "fdf");
-	data.img = mlx_new_image(vars.mlx, 500, 500);
+	vars.win = mlx_new_window(vars.mlx, WINDOW_WIDTH , WINDOW_HEIGHT, "fdf");
+	data.img = mlx_new_image(vars.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
 	data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
 	vars.data = data;
-	vars.shape = shape;//
+	vars.shape_3d = shape_3d;//
 	mlx_hook(vars.win, 2, 1L<<0, handle_keys, &vars);
 	vars.width = width;
 	vars.height = height;
@@ -266,27 +357,30 @@ char **map_file_to_chars(char *file)
 	return (map);
 }
 
-float	**new_value(int	z, int x, int y)
+float	**new_value(int x, int y, int z, int dimension)
 {
 	float	**value;
 	int		i;
 
-	value = (float **)malloc(sizeof(float *) * (3));
+	value = (float **)malloc(sizeof(float *) * (dimension));
 	i = 0;
-	while (i < 3)
+	while (i < dimension)
 	{
 		value[i] = (float *)malloc(sizeof(float));
 		i++;
 	}
 	value[0][0] = (float)x;
 	value[1][0] = (float)y;
-	value[2][0] = (float)z;
+	if (dimension == 3)
+	{
+		value[2][0] = (float)z;
+	}
 	return (value);
 }
 
 t_matrix **map_chars_to_matrices(char **chars_map, int *height, int *width)
 {
-	t_matrix	**shape;
+	t_matrix	**shape_3d;
 	int	i;
 	int j;
 	char **tmp_ptr;
@@ -297,11 +391,11 @@ t_matrix **map_chars_to_matrices(char **chars_map, int *height, int *width)
 	free_all(tmp_ptr, *width - 1);
 	while (chars_map[*height] != NULL)
 		*height += 1;
-	shape = (t_matrix **)malloc(sizeof(t_matrix *) * (*height));
+	shape_3d = (t_matrix **)malloc(sizeof(t_matrix *) * (*height));
 	i = 0;
 	while (i < *height)
 	{
-		shape[i] = (t_matrix *)malloc(sizeof(t_matrix) * (*width));
+		shape_3d[i] = (t_matrix *)malloc(sizeof(t_matrix) * (*width));
 		i++;
 	}
 	i = 0;
@@ -311,20 +405,20 @@ t_matrix **map_chars_to_matrices(char **chars_map, int *height, int *width)
 		j = 0;
 		while (j < *width)
 		{
-			(shape[i][j]).value = new_value(ft_atoi(tmp_ptr[j]), i, j);
+			(shape_3d[i][j]).value = new_value(i, j, ft_atoi(tmp_ptr[j]), 3);
 			j++;
 		}
 		free_all(tmp_ptr, *width);
 		i++;
 	}
-	return (shape);
+	return (shape_3d);
 }
 
 
 int main(int ac, char **av)
 {
 	char	**chars_map;
-	t_matrix		**shape;
+	t_matrix		**shape_3d;
 	int		height;
 	int		width;
 
@@ -335,7 +429,7 @@ int main(int ac, char **av)
 	chars_map = map_file_to_chars(av[1]);
 	if (chars_map == 0)
 		return (0);
-	shape = map_chars_to_matrices(chars_map, &height, &width);
-	fdf(shape, height, width);
+	shape_3d = map_chars_to_matrices(chars_map, &height, &width);
+	fdf(shape_3d, height, width);
 	return 0;
 }
