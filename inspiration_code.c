@@ -1,16 +1,12 @@
 #include <stdio.h>
-// #include "fdf.h"
-
-typedef struct {
-    float x, y, z;
-} Point3D;
-
-typedef struct {
-    float x, y;
-} Point2D;
+#include "fdf.h"
 
 // Define viewpoint
-Point3D viewpoint = {0, 0, 0};
+t_3d_point viewpoint = {0, 0, 0};
+
+
+// Function to project a 3D point to a 2D point
+t_2d_point projectPoint(t_3d_point point3d) {
 
 // Define projection matrix (simple perspective projection)
 float projection_matrix[3][3] = {
@@ -18,9 +14,6 @@ float projection_matrix[3][3] = {
     {0, 1, 0},
     {0, 0, 1}
 };
-
-// Function to project a 3D point to a 2D point
-Point2D projectPoint(Point3D point3d) {
     // Apply projection
     float x_proj = point3d.x * projection_matrix[0][0] + point3d.y * projection_matrix[1][0] + point3d.z * projection_matrix[2][0];
     float y_proj = point3d.x * projection_matrix[0][1] + point3d.y * projection_matrix[1][1] + point3d.z * projection_matrix[2][1];
@@ -31,24 +24,26 @@ Point2D projectPoint(Point3D point3d) {
     y_proj /= z_proj;
 
     // Create 2D point
-    Point2D point2d = {x_proj, y_proj};
+    t_2d_point point2d = {x_proj, y_proj};
     return point2d;
 }
 
-int main() {
-    // Define 3D points
-    Point3D points_3d[] = {{1, 1, 1}, {2, 3, 4}, {3, 2, 1}};
-    int num_points = sizeof(points_3d) / sizeof(points_3d[0]);
 
-    // Project and print 3D points
-    printf("Projected 2D Points:\n");
-    for (int i = 0; i < num_points; i++) {
-        Point2D point2d = projectPoint(points_3d[i]);
-        printf("(%f, %f)\n", point2d.x, point2d.y);
-    }
 
-    return 0;
-}
+// int main() {
+//     // Define 3D points
+//     Point3D points_3d[] = {{1, 1, 1}, {2, 3, 4}, {3, 2, 1}};
+//     int num_points = sizeof(points_3d) / sizeof(points_3d[0]);
+
+//     // Project and print 3D points
+//     printf("Projected 2D Points:\n");
+//     for (int i = 0; i < num_points; i++) {
+//         Point2D point2d = projectPoint(points_3d[i]);
+//         printf("(%f, %f)\n", point2d.x, point2d.y);
+//     }
+
+//     return 0;
+// }
 
 
 //==========================================================================================
@@ -108,4 +103,4 @@ int main() {
 //     printf("Rotated point: (%f, %f, %f)\n", point.x, point.y, point.z);
 
 //     return 0;
-}
+// }
