@@ -6,8 +6,26 @@
 # include <fcntl.h>
 # include<math.h>
 # include "get_next_line/get_next_line.h"
+//==
 # define WINDOW_HEIGHT 500
 # define WINDOW_WIDTH 500
+//==
+# define ROTATION_ANGLE 2
+# define TRANSLATION_DISTENCE 2 
+//=== buttons ====
+# define ESC 53
+# define Q 12
+# define W 13
+# define A 0
+# define S 1
+# define Z 6
+# define X 7
+# define E 14
+# define R 15
+# define D 2
+# define F 3
+# define C 8
+# define V 9
 //===========================
 typedef struct	s_img_data {
 	void	*img;
@@ -64,4 +82,5 @@ int calc_dist(int x, int y, t_2d_point point);
 char	matrix_is_valid(t_matrix matrix);
 //=
 float	**new_value(int x, int y, int z, int dimension);
+void	draw_map(t_vars *vars);
 #endif
