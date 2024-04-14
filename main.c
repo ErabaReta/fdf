@@ -7,8 +7,12 @@
 void	my_mlx_pixel_put(t_img_data *data, int x, int y, int color)
 {
 	char	*dst;
+	int offset;
 
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	if (y >= WINDOW_HEIGHT || x >= WINDOW_WIDTH || x < 0 || y < 0)
+		return ;
+	offset = y * data->line_length + x * (data->bits_per_pixel / 8);
+	dst = data->addr + offset;
 	*(unsigned int*)dst = color;
 }
 
@@ -97,7 +101,7 @@ void	draw_circle(t_img_data *img, int cho3a3, t_2d_point point)
 			if (calc_dist(j, i, point) <= cho3a3)
 			{
 				// printf("pixeled the point x ==%d  | y == %d | with dist == %d\n", j, i, calc_dist(j, i, point));
-				my_mlx_pixel_put(img, j, i, 0x00FF0000);
+				my_mlx_pixel_put(img, j, i, 0x00FFFFFF);
 			}
 			j++;
 		}
@@ -119,34 +123,173 @@ void	draw_circle(t_img_data *img, int cho3a3, t_2d_point point)
 // 	return (0);
 // }
 
+t_3d_point rotateX_point(t_3d_point point, float angle) {
+    float sinAngle = sin(angle);
+    float cosAngle = cos(angle);
+    t_3d_point rotatedPoint;
+    rotatedPoint.x = point.x;
+    rotatedPoint.y = point.y * cosAngle - point.z * sinAngle;
+    rotatedPoint.z = point.y * sinAngle + point.z * cosAngle;
+    return rotatedPoint;
+}
+
+t_3d_point rotateY_point(t_3d_point point, float angle) {
+    float sinAngle = sin(angle);
+    float cosAngle = cos(angle);
+    t_3d_point rotatedPoint;
+    rotatedPoint.x = point.x * cosAngle + point.z * sinAngle;
+    rotatedPoint.y = point.y;
+    rotatedPoint.z = -point.x * sinAngle + point.z * cosAngle;
+    return rotatedPoint;
+}
+
+t_3d_point rotateZ_point(t_3d_point point, float angle) {
+    float sinAngle = sin(angle);
+    float cosAngle = cos(angle);
+    t_3d_point rotatedPoint;
+    rotatedPoint.x = point.x * cosAngle - point.y * sinAngle;
+    rotatedPoint.y = point.x * sinAngle + point.y * cosAngle;
+    rotatedPoint.z = point.z;
+    return rotatedPoint;
+}
+
+void	rotate_shape(t_vars *vars, float xangle, char axis)
+{
+	t_3d_point	point3d;
+	int i;
+	int	j;
+
+	i = 0;
+	while (i < vars->height)
+	{
+		j = 0;
+		while (j < vars->width)
+		{
+			point3d.x = vars->shape_3d[i][j].value[0][0] - vars->shape_3d[(vars->height) / 2][(vars->width) / 2].value[0][0];
+			point3d.y = vars->shape_3d[i][j].value[1][0] - vars->shape_3d[(vars->height) / 2][(vars->width) / 2].value[1][0];
+			point3d.z = vars->shape_3d[i][j].value[2][0] - vars->shape_3d[(vars->height) / 2][(vars->width) / 2].value[2][0];
+
+			if (axis == 'x')
+				point3d = rotateX_point(point3d, xangle);//
+			else if (axis == 'y')
+				point3d = rotateY_point(point3d, xangle);//
+			else if (axis == 'z')
+				point3d = rotateZ_point(point3d, xangle);//
+
+
+			vars->shape_3d[i][j].value[0][0] = point3d.x + vars->shape_3d[(vars->height) / 2][(vars->width) / 2].value[0][0];
+			vars->shape_3d[i][j].value[1][0] = point3d.y + vars->shape_3d[(vars->height) / 2][(vars->width) / 2].value[1][0];
+			vars->shape_3d[i][j].value[2][0] = point3d.z + vars->shape_3d[(vars->height) / 2][(vars->width) / 2].value[2][0];
+			j++;
+		}
+		i++;
+	}
+}
+
+void clear_image(t_vars *vars)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < WINDOW_HEIGHT)
+	{
+		j = 0;
+		while (j < WINDOW_WIDTH)
+		{
+			my_mlx_pixel_put(&(vars->data), j, i, 0x00);
+			j++;
+		}
+		i++;
+	}
+	mlx_put_image_to_window(vars->mlx, vars->win, vars->data.img, 0, 0);
+}
+
+void	translate_shape(t_vars *vars, int distence, char axis)
+{
+	int i;
+	int	j;
+
+	i = 0;
+	while (i < vars->height)
+	{
+		j = 0;
+		while (j < vars->width)
+		{
+			if (axis == 'x')
+				vars->shape_3d[i][j].value[0][0] += distence;
+			else if (axis == 'y')
+				vars->shape_3d[i][j].value[1][0] += distence;
+			else if (axis == 'z')
+				vars->shape_3d[i][j].value[2][0] += distence;
+			j++;
+		}
+		i++;
+	}
+}
+
 int	handle_keys(int keycode, t_vars *vars)
 {	
-	static int x;
-	static int y;
-
-	if (keycode == 53) // ESC
+	printf("KEYCODE %d\n", keycode);//
+	if (keycode == ESC)
 	{
 		mlx_destroy_window(vars->mlx, vars->win);
 		exit(0);
 	}
-	if ( keycode == 13) //w
+	else if ( keycode == Q)
 	{
-		y-=10;
+		rotate_shape(vars, ROTATION_ANGLE * (M_PI / 180), 'x');
 	}
-	if ( keycode == 1)// s
+	else if ( keycode == W)
 	{
-		y+=10;
+		rotate_shape(vars, -ROTATION_ANGLE * (M_PI / 180), 'x');
 	}
-	if ( keycode == 0) // a
+	else if ( keycode == A)
 	{
-		x-=10;
+		rotate_shape(vars, 2 * (M_PI / 180), 'y');
 	}
-	if ( keycode == 2) // d
+	else if ( keycode == S)
 	{
-		x+=10;
+		rotate_shape(vars, -ROTATION_ANGLE * (M_PI / 180), 'y');
 	}
-	mlx_put_image_to_window(vars->mlx, vars->win, (*vars).data.img, x, y);
-	printf("%d\n", keycode);
+		else if ( keycode == Z)
+	{
+		rotate_shape(vars, ROTATION_ANGLE * (M_PI / 180), 'z');
+	}
+		else if ( keycode == X)
+	{
+		rotate_shape(vars, -ROTATION_ANGLE * (M_PI / 180), 'z');
+	}
+		else if ( keycode == E)
+	{
+		translate_shape(vars, TRANSLATION_DISTENCE, 'x');
+	}
+		else if ( keycode == R)
+	{
+		translate_shape(vars, -TRANSLATION_DISTENCE, 'x');
+	}
+		else if ( keycode == D)
+	{
+		translate_shape(vars, TRANSLATION_DISTENCE, 'y');
+	}
+		else if ( keycode == F)
+	{
+		translate_shape(vars, -TRANSLATION_DISTENCE, 'y');
+	}
+		else if ( keycode == C)
+	{
+		translate_shape(vars, TRANSLATION_DISTENCE, 'z');
+	}
+		else if ( keycode == V)
+	{
+		translate_shape(vars, -TRANSLATION_DISTENCE, 'z');
+	}
+	else
+	{
+		return (0);
+	}
+	clear_image(vars);
+	draw_map(vars);
 	return (0);
 }
 // 13 == w
@@ -156,7 +299,7 @@ int	handle_keys(int keycode, t_vars *vars)
 // 2 == d
 
 // Define viewpoint
-t_3d_point viewpoint = {0, 0, 0};
+// t_3d_point viewpoint = {0, 0, 0};
 
 
 // Function to project a 3D point to a 2D point
@@ -174,8 +317,11 @@ float projection_matrix[3][3] = {
     float z_proj = point3d.x * projection_matrix[0][2] + point3d.y * projection_matrix[1][2] + point3d.z * projection_matrix[2][2];
 
     // Normalize coordinates
-    x_proj /= z_proj;
-    y_proj /= z_proj;
+	if(z_proj != 0)
+	{
+	    x_proj /= z_proj;
+    	y_proj /= z_proj;
+	}
 
     // Create 2D point
     t_2d_point point2d = {x_proj * 100 +  200, y_proj * 100 + 200};
@@ -204,9 +350,9 @@ void	shape_3d_to_2d(t_vars	*vars)
 		{
 			//The general equation of a sphere is: (x - a)² + (y - b)² + (z - c)² = r²
 			//equation of plane is : a(x  - x0) + b(y - y0) + c(z - z0) = 0
-			point3d.x = vars->shape_3d[i][j].value[0][0] + 10;
-			point3d.y = vars->shape_3d[i][j].value[1][0] + 10;
-			point3d.z = vars->shape_3d[i][j].value[2][0] + 10;
+			point3d.x = vars->shape_3d[i][j].value[0][0] - 20;
+			point3d.y = vars->shape_3d[i][j].value[1][0]  - 20;
+			point3d.z = (vars->shape_3d[i][j].value[2][0]) - 20;
 			point2d = project_point(point3d);
 			printf("the 3d point x = %f , y = %f ,  z = %f turn into 2d point x = %d ,  y = %d \n", point3d.x, point3d.y, point3d.z, point2d.x, point2d.y);
 			(vars->shape_2d[i][j]).value = new_value(point2d.x, point2d.y, 0, 2);
@@ -234,20 +380,28 @@ void	line_between_2points(t_vars	*vars, t_2d_point point1, t_2d_point point2)
 {
 	int	x;
 	int	y;
-
-	y = ft_min(point1.y, point2.y);
-	while (y <= ft_max(point1.y, point2.y))
+	if ((point2.y - point1.y) != 0)
+	{
+		y = ft_min(point1.y, point2.y);
+		while (y <= ft_max(point1.y, point2.y))
+		{
+			// if (calc_dist(x, y, point1) + calc_dist(x, y, point2) == calc_dist(point1.x, point1.y, point2))  
+			// (y -y1) =[(y2 - y1) / (x2 - x1)] (x - x1) 
+			x = (((y - point1.y) * (point2.x - point1.x)) / (point2.y - point1.y) ) + point1.x;
+			my_mlx_pixel_put(&(vars->data), x, y, 0x00FFFFFF);
+			y++;
+		}
+	} if (point2.x - point1.x != 0)
 	{
 		x = ft_min(point1.x, point2.x);
 		while (x <= ft_max(point1.x, point2.x))
 		{
 			// if (calc_dist(x, y, point1) + calc_dist(x, y, point2) == calc_dist(point1.x, point1.y, point2))  
 			// (y -y1) =[(y2 - y1) / (x2 - x1)] (x - x1) 
-			if ((y - point1.y) * (point2.x - point1.x) == (point2.y - point1.y) * (x - point1.x ))
-				my_mlx_pixel_put(&(vars->data), x, y, 0x00FF0000);
+			y = (((point2.y - point1.y) * (x - point1.x )) / (point2.x - point1.x)) + point1.y;
+			my_mlx_pixel_put(&(vars->data), x, y, 0x00FFFFFF);
 			x++;
 		}
-		y++;
 	}
 }
 
