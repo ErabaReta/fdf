@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "fdf.h": "c",
-        "get_next_line.h": "c"
+        "get_next_line.h": "c",
+        "mlx.h": "c"
     }
 }

@@ -1,7 +1,7 @@
 CC = cc
 RM = rm -rf
 CFLAGS = -Wall -Wextra -Werror 
-CFILES = main.c ft_split.c get_next_line/get_next_line.c get_next_line/get_next_line_utils.c ft_strlen.c ft_memmove.c ft_atoi.c ft_math.c
+CFILES = main.c ft_split.c ft_strlen.c ft_memmove.c ft_atoi.c ft_math.c ft_strdup.c ft_strjoin.c
 OFILES = $(CFILES:.c=.o)
 NAME = fdf
 
