@@ -202,7 +202,7 @@ void clear_image(t_vars *vars)
 		}
 		i++;
 	}
-	mlx_put_image_to_window(vars->mlx, vars->win, vars->data.img, 0, 0);
+	// mlx_put_image_to_window(vars->mlx, vars->win, vars->data.img, 0, 0);
 }
 
 void	translate_shape(t_vars *vars, int distence, char axis)
@@ -227,6 +227,7 @@ void	translate_shape(t_vars *vars, int distence, char axis)
 		i++;
 	}
 }
+ int	d = 1;////////////////////////////////////////////
 
 int	handle_keys(int keycode, t_vars *vars)
 {	
@@ -284,10 +285,20 @@ int	handle_keys(int keycode, t_vars *vars)
 	{
 		translate_shape(vars, -TRANSLATION_DISTENCE, 'z');
 	}
+		else if (keycode == UP_ARROW)
+	{
+		d += 1;
+	}
+		else if (keycode == DOWN_ARROW)
+	{
+		d -= 1;
+	}
 	else
 	{
 		return (0);
 	}
+	if (d == 0)
+		d+= 1;
 	clear_image(vars);
 	draw_map(vars);
 	return (0);
@@ -307,14 +318,22 @@ t_2d_point project_point(t_3d_point point3d) {
 
 // Define projection matrix (simple perspective projection)
 float projection_matrix[3][3] = {
-    {1, 0, 0},
-    {0, 1, 0},
+    {d, 0, 0},
+    {0, d, 0},
     {0, 0, 1}
 };
+	t_2d_point	point2d;
+	// resolving the mirror porblem
+	if (point3d.z >= 0)
+	{
+		point2d.x = -1;
+		point2d.y = -1;
+		return point2d;
+	}
     // Apply projection
-    float x_proj = point3d.x * projection_matrix[0][0] + point3d.y * projection_matrix[1][0] + point3d.z * projection_matrix[2][0];
-    float y_proj = point3d.x * projection_matrix[0][1] + point3d.y * projection_matrix[1][1] + point3d.z * projection_matrix[2][1];
-    float z_proj = point3d.x * projection_matrix[0][2] + point3d.y * projection_matrix[1][2] + point3d.z * projection_matrix[2][2];
+    float x_proj = point3d.x * projection_matrix[0][0] /*+ point3d.y * projection_matrix[1][0] + point3d.z * projection_matrix[2][0]*/;
+    float y_proj = /*point3d.x * projection_matrix[0][1] +*/ point3d.y * projection_matrix[1][1]  /*+point3d.z * projection_matrix[2][1]*/;
+    float z_proj = /*point3d.x * projection_matrix[0][2] + point3d.y * projection_matrix[1][2] +*/ point3d.z * projection_matrix[2][2];
 
     // Normalize coordinates
 	if(z_proj != 0)
@@ -324,7 +343,8 @@ float projection_matrix[3][3] = {
 	}
 
     // Create 2D point
-    t_2d_point point2d = {x_proj * 100 +  200, y_proj * 100 + 200};
+    point2d.x = x_proj * 100 + 150;
+	point2d.y = y_proj * 100 + 150;
     return point2d;
 }
 
@@ -355,7 +375,7 @@ void	shape_3d_to_2d(t_vars	*vars)
 			point3d.z = (vars->shape_3d[i][j].value[2][0]) - 20;
 			point2d = project_point(point3d);
 			printf("the 3d point x = %f , y = %f ,  z = %f turn into 2d point x = %d ,  y = %d \n", point3d.x, point3d.y, point3d.z, point2d.x, point2d.y);
-			(vars->shape_2d[i][j]).value = new_value(point2d.x, point2d.y, 0, 2);
+			(vars->shape_2d[i][j]).value = new_value(point2d.x, point2d.y, 0, 2);////!
 			j++;
 		}
 		i++;
@@ -380,12 +400,16 @@ void	line_between_2points(t_vars	*vars, t_2d_point point1, t_2d_point point2)
 {
 	int	x;
 	int	y;
+
+	if (point1.x == -1 || point2.x == -1 || point1.y == -1 || point2.y == -1)
+		return ;
 	if ((point2.y - point1.y) != 0)
 	{
 		y = ft_min(point1.y, point2.y);
-		while (y <= ft_max(point1.y, point2.y))
+		while (y < 0)
+			y++;
+		while (y <= ft_max(point1.y, point2.y) && y < WINDOW_HEIGHT)
 		{
-			// if (calc_dist(x, y, point1) + calc_dist(x, y, point2) == calc_dist(point1.x, point1.y, point2))  
 			// (y -y1) =[(y2 - y1) / (x2 - x1)] (x - x1) 
 			x = (((y - point1.y) * (point2.x - point1.x)) / (point2.y - point1.y) ) + point1.x;
 			my_mlx_pixel_put(&(vars->data), x, y, 0x00FFFFFF);
@@ -394,7 +418,9 @@ void	line_between_2points(t_vars	*vars, t_2d_point point1, t_2d_point point2)
 	} if (point2.x - point1.x != 0)
 	{
 		x = ft_min(point1.x, point2.x);
-		while (x <= ft_max(point1.x, point2.x))
+		while (x < 0)
+			x++;
+		while (x <= ft_max(point1.x, point2.x) && x < WINDOW_WIDTH)
 		{
 			// if (calc_dist(x, y, point1) + calc_dist(x, y, point2) == calc_dist(point1.x, point1.y, point2))  
 			// (y -y1) =[(y2 - y1) / (x2 - x1)] (x - x1) 
@@ -431,25 +457,26 @@ void	draw_lines(t_vars *vars, int i, int j)
 void	draw_map(t_vars *vars)
 {
 	int	i;
-	int	j;
-	t_2d_point	point2d;
-
+	// int	j;
+	// t_2d_point	point2d;
 
 	shape_3d_to_2d(vars);//
-	i = 0;
-	while (i < vars->height)
-	{
-		j = 0;
-		while (j < vars->width)
-		{
-			point2d.x = vars->shape_2d[i][j].value[0][0];
-			point2d.y = vars->shape_2d[i][j].value[1][0];
-			draw_circle(&(vars->data), 2, point2d);
-			// my_mlx_pixel_put(&(vars->data), point2d.x, point2d.y, 0x00FFFFFF);
-			j++;
-		}
-		i++;
-	}
+	// i = 0;
+	// while (i < vars->height)
+	// {
+	// 	j = 0;
+	// 	while (j < vars->width)
+	// 	{
+	// 		point2d.x = vars->shape_2d[i][j].value[0][0];
+	// 		point2d.y = vars->shape_2d[i][j].value[1][0];
+	// 		draw_circle(&(vars->data), 2, point2d);
+	// 		// my_mlx_pixel_put(&(vars->data), point2d.x, point2d.y, 0x00FFFFFF);
+
+	// 		j++;
+	// 	}
+	// 	i++;
+	// }
+
 	i = 0;
 	while (i < vars->height)
 	{
@@ -496,17 +523,23 @@ char **map_file_to_chars(char *file)
 	int fd = open(file, O_RDONLY);
 	if (fd < 0)
 		return 0;
-	tmp = get_next_line(fd);
-	str = ft_gnl_strdup("");
-	if (str == NULL)
-		return (0);
-	while(tmp != NULL)
+	str = ft_strdup("");
+	int readed;
+	tmp = (char *)malloc(sizeof(char) * 1000001);
+	readed = 1;
+
+
+	while (readed > 0)
 	{
-		str = ft_gnl_strjoin(str, tmp);
-		free(tmp);
-		tmp = get_next_line(fd);
+		readed = read(fd, tmp , 1000000);
+		tmp[readed] = '\0';
+		str = ft_strjoin(str, tmp);
+		// printf("readed = %d | tmp %s\n", readed, tmp);
+
 	}
+	free(tmp);
 	map = ft_split(str, '\n');
+	free(str);
 	close(fd);
 	return (map);
 }
@@ -581,6 +614,7 @@ int main(int ac, char **av)
 	if (ac != 2)
 		return (1);
 	chars_map = map_file_to_chars(av[1]);
+	// exit(0);
 	if (chars_map == 0)
 		return (0);
 	shape_3d = map_chars_to_matrices(chars_map, &height, &width);
