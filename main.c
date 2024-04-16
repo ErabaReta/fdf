@@ -77,37 +77,37 @@ void	my_mlx_pixel_put(t_img_data *data, int x, int y, int color)
 
 // }
 
-void	draw_circle(t_img_data *img, int cho3a3, t_2d_point point)
-{
-	int i = point.y - cho3a3;
-	int j;
+// void	draw_circle(t_img_data *img, int cho3a3, t_2d_point point)
+// {
+// 	int i = point.y - cho3a3;
+// 	int j;
 
-	// while (i < 299)
-	// {
-	// 	j = 0;
-	// 	while (j < 299)
-	// 	{
-	// 		if (  (ft_power(ft_abs(j - point.x), 2) + ft_power(ft_abs(i - point.y), 2))       == ft_power(cho3a3, 2))
-	// 		my_mlx_pixel_put(img, j, i, 0x00FF0000);
-	// 		j++;
-	// 	}
-	// 	i++;
-	// }
-	while (i < point.y + cho3a3)
-	{
-		j = point.x - cho3a3;
-		while (j < point.x + cho3a3)
-		{
-			if (calc_dist(j, i, point) <= cho3a3)
-			{
-				// printf("pixeled the point x ==%d  | y == %d | with dist == %d\n", j, i, calc_dist(j, i, point));
-				my_mlx_pixel_put(img, j, i, 0x00FFFFFF);
-			}
-			j++;
-		}
-		i++;
-	}
-}
+// 	// while (i < 299)
+// 	// {
+// 	// 	j = 0;
+// 	// 	while (j < 299)
+// 	// 	{
+// 	// 		if (  (ft_power(ft_abs(j - point.x), 2) + ft_power(ft_abs(i - point.y), 2))       == ft_power(cho3a3, 2))
+// 	// 		my_mlx_pixel_put(img, j, i, 0x00FF0000);
+// 	// 		j++;
+// 	// 	}
+// 	// 	i++;
+// 	// }
+// 	while (i < point.y + cho3a3)
+// 	{
+// 		j = point.x - cho3a3;
+// 		while (j < point.x + cho3a3)
+// 		{
+// 			if (calc_dist(j, i, point) <= cho3a3)
+// 			{
+// 				// printf("pixeled the point x ==%d  | y == %d | with dist == %d\n", j, i, calc_dist(j, i, point));
+// 				my_mlx_pixel_put(img, j, i, 0x00FFFFFF);
+// 			}
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// }
 
 // int	draw(int button, int x, int y, void *ptr)
 // {
@@ -123,68 +123,7 @@ void	draw_circle(t_img_data *img, int cho3a3, t_2d_point point)
 // 	return (0);
 // }
 
-t_3d_point rotateX_point(t_3d_point point, float angle) {
-    float sinAngle = sin(angle);
-    float cosAngle = cos(angle);
-    t_3d_point rotatedPoint;
-    rotatedPoint.x = point.x;
-    rotatedPoint.y = point.y * cosAngle - point.z * sinAngle;
-    rotatedPoint.z = point.y * sinAngle + point.z * cosAngle;
-    return rotatedPoint;
-}
 
-t_3d_point rotateY_point(t_3d_point point, float angle) {
-    float sinAngle = sin(angle);
-    float cosAngle = cos(angle);
-    t_3d_point rotatedPoint;
-    rotatedPoint.x = point.x * cosAngle + point.z * sinAngle;
-    rotatedPoint.y = point.y;
-    rotatedPoint.z = -point.x * sinAngle + point.z * cosAngle;
-    return rotatedPoint;
-}
-
-t_3d_point rotateZ_point(t_3d_point point, float angle) {
-    float sinAngle = sin(angle);
-    float cosAngle = cos(angle);
-    t_3d_point rotatedPoint;
-    rotatedPoint.x = point.x * cosAngle - point.y * sinAngle;
-    rotatedPoint.y = point.x * sinAngle + point.y * cosAngle;
-    rotatedPoint.z = point.z;
-    return rotatedPoint;
-}
-
-void	rotate_shape(t_vars *vars, float xangle, char axis)
-{
-	t_3d_point	point3d;
-	int i;
-	int	j;
-
-	i = 0;
-	while (i < vars->height)
-	{
-		j = 0;
-		while (j < vars->width)
-		{
-			point3d.x = vars->shape_3d[i][j].value[0][0] - vars->shape_3d[(vars->height) / 2][(vars->width) / 2].value[0][0];
-			point3d.y = vars->shape_3d[i][j].value[1][0] - vars->shape_3d[(vars->height) / 2][(vars->width) / 2].value[1][0];
-			point3d.z = vars->shape_3d[i][j].value[2][0] - vars->shape_3d[(vars->height) / 2][(vars->width) / 2].value[2][0];
-
-			if (axis == 'x')
-				point3d = rotateX_point(point3d, xangle);//
-			else if (axis == 'y')
-				point3d = rotateY_point(point3d, xangle);//
-			else if (axis == 'z')
-				point3d = rotateZ_point(point3d, xangle);//
-
-
-			vars->shape_3d[i][j].value[0][0] = point3d.x + vars->shape_3d[(vars->height) / 2][(vars->width) / 2].value[0][0];
-			vars->shape_3d[i][j].value[1][0] = point3d.y + vars->shape_3d[(vars->height) / 2][(vars->width) / 2].value[1][0];
-			vars->shape_3d[i][j].value[2][0] = point3d.z + vars->shape_3d[(vars->height) / 2][(vars->width) / 2].value[2][0];
-			j++;
-		}
-		i++;
-	}
-}
 
 void clear_image(t_vars *vars)
 {
@@ -217,17 +156,17 @@ void	translate_shape(t_vars *vars, int distence, char axis)
 		while (j < vars->width)
 		{
 			if (axis == 'x')
-				vars->shape_3d[i][j].value[0][0] += distence;
+				vars->shape_3d[i][j].x += distence;
 			else if (axis == 'y')
-				vars->shape_3d[i][j].value[1][0] += distence;
+				vars->shape_3d[i][j].y += distence;
 			else if (axis == 'z')
-				vars->shape_3d[i][j].value[2][0] += distence;
+				vars->shape_3d[i][j].z += distence;
 			j++;
 		}
 		i++;
 	}
 }
- int	d = 1;////////////////////////////////////////////
+ float	d = 4.5;////////////////////////////////////////////
 
 int	handle_keys(int keycode, t_vars *vars)
 {	
@@ -287,18 +226,18 @@ int	handle_keys(int keycode, t_vars *vars)
 	}
 		else if (keycode == UP_ARROW)
 	{
-		d += 1;
+		d += 0.5;
 	}
 		else if (keycode == DOWN_ARROW)
 	{
-		d -= 1;
+		d -= 0.5;
 	}
 	else
 	{
 		return (0);
 	}
-	if (d == 0)
-		d+= 1;
+	if (d <= 0)
+		d = 0.5;
 	clear_image(vars);
 	draw_map(vars);
 	return (0);
@@ -309,16 +248,13 @@ int	handle_keys(int keycode, t_vars *vars)
 
 // 2 == d
 
-// Define viewpoint
-// t_3d_point viewpoint = {0, 0, 0};
 
 
-// Function to project a 3D point to a 2D point
 t_2d_point project_point(t_3d_point point3d) {
 
 // Define projection matrix (simple perspective projection)
 float projection_matrix[3][3] = {
-    {d, 0, 0},
+    {-d, 0, 0},
     {0, d, 0},
     {0, 0, 1}
 };
@@ -341,27 +277,18 @@ float projection_matrix[3][3] = {
 	    x_proj /= z_proj;
     	y_proj /= z_proj;
 	}
-
+	//adjusting the points to 
     // Create 2D point
-    point2d.x = x_proj * 100 + 150;
-	point2d.y = y_proj * 100 + 150;
+    point2d.x = x_proj * 100 + 250;
+	point2d.y = y_proj * 100 + 250;
     return point2d;
 }
 
 void	shape_3d_to_2d(t_vars	*vars)
 {
-	t_2d_point	point2d;
-	t_3d_point	point3d;
 	int 		i;
 	int			j;
 
-	vars->shape_2d = (t_matrix **)malloc(sizeof(t_matrix *) * (vars->height));
-	i = 0;
-	while (i < vars->height)
-	{
-		vars->shape_2d[i] = (t_matrix *)malloc(sizeof(t_matrix) * (vars->width));
-		i++;
-	}
 	i = 0;
 	while (i < vars->height)
 	{
@@ -370,12 +297,11 @@ void	shape_3d_to_2d(t_vars	*vars)
 		{
 			//The general equation of a sphere is: (x - a)² + (y - b)² + (z - c)² = r²
 			//equation of plane is : a(x  - x0) + b(y - y0) + c(z - z0) = 0
-			point3d.x = vars->shape_3d[i][j].value[0][0] - 20;
-			point3d.y = vars->shape_3d[i][j].value[1][0]  - 20;
-			point3d.z = (vars->shape_3d[i][j].value[2][0]) - 20;
-			point2d = project_point(point3d);
-			printf("the 3d point x = %f , y = %f ,  z = %f turn into 2d point x = %d ,  y = %d \n", point3d.x, point3d.y, point3d.z, point2d.x, point2d.y);
-			(vars->shape_2d[i][j]).value = new_value(point2d.x, point2d.y, 0, 2);////!
+			// point3d.x = vars->shape_3d[i][j].x - 20;
+			// point3d.y = vars->shape_3d.y  - 20;
+			// point3d.z = (vars->shape_3d[i][j].value[2][0]) - 20;
+			vars->shape_2d[i][j] = project_point(vars->shape_3d[i][j]);
+			printf("the 3d point x = %f , y = %f ,  z = %f turn into 2d point x = %d ,  y = %d \n", vars->shape_3d[i][j].x, vars->shape_3d[i][j].y, vars->shape_3d[i][j].z, vars->shape_2d[i][j].x, vars->shape_2d[i][j].y);
 			j++;
 		}
 		i++;
@@ -401,7 +327,7 @@ void	line_between_2points(t_vars	*vars, t_2d_point point1, t_2d_point point2)
 	int	x;
 	int	y;
 
-	if (point1.x == -1 || point2.x == -1 || point1.y == -1 || point2.y == -1)
+	if ((point1.x == -1 && point1.y == -1) || (point2.x == -1 && point2.y == -1))
 		return ;
 	if ((point2.y - point1.y) != 0)
 	{
@@ -434,22 +360,25 @@ void	line_between_2points(t_vars	*vars, t_2d_point point1, t_2d_point point2)
 
 void	draw_lines(t_vars *vars, int i, int j)
 {
-	t_2d_point point1;
-	t_2d_point point2;
+	// if (i + 1 < vars->height)
+	// {
+	// 	line_between_2points(vars, vars->shape_2d[i][j], vars->shape_2d[i + 1][j]);
+	// }
+	// if (j + 1 < vars->width)
+	// {
+	// 	line_between_2points(vars, vars->shape_2d[i][j], vars->shape_2d[i][j + 1]);
+	// 	draw_lines(vars, i, j + 1);
+	// }
+	t_2d_point point2d;
 
-	point1.x = vars->shape_2d[i][j].value[0][0];
-	point1.y = vars->shape_2d[i][j].value[1][0];
+	point2d = project_point(vars->shape_3d[i][j]);
 	if (i + 1 < vars->height)
 	{
-		point2.x = vars->shape_2d[i + 1][j].value[0][0];
-		point2.y = vars->shape_2d[i + 1][j].value[1][0];
-		line_between_2points(vars, point1, point2);
+		line_between_2points(vars, point2d, project_point(vars->shape_3d[i + 1][j]));
 	}
 	if (j + 1 < vars->width)
 	{
-		point2.x = vars->shape_2d[i][j + 1].value[0][0];
-		point2.y = vars->shape_2d[i][j + 1].value[1][0];
-		line_between_2points(vars, point1, point2);
+		line_between_2points(vars, point2d, project_point(vars->shape_3d[i][j + 1]));
 		draw_lines(vars, i, j + 1);
 	}
 }
@@ -458,19 +387,17 @@ void	draw_map(t_vars *vars)
 {
 	int	i;
 	// int	j;
-	// t_2d_point	point2d;
 
-	shape_3d_to_2d(vars);//
+	// shape_3d_to_2d(vars);//////////
+
 	// i = 0;
 	// while (i < vars->height)
 	// {
 	// 	j = 0;
 	// 	while (j < vars->width)
 	// 	{
-	// 		point2d.x = vars->shape_2d[i][j].value[0][0];
-	// 		point2d.y = vars->shape_2d[i][j].value[1][0];
-	// 		draw_circle(&(vars->data), 2, point2d);
-	// 		// my_mlx_pixel_put(&(vars->data), point2d.x, point2d.y, 0x00FFFFFF);
+	// 		// draw_circle(&(vars->data), 2, point2d);
+	// 		my_mlx_pixel_put(&(vars->data), vars->shape_2d[i][j].x, vars->shape_2d[i][j].y, 0x00FFFFFF);
 
 	// 		j++;
 	// 	}
@@ -485,10 +412,11 @@ void	draw_map(t_vars *vars)
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->data.img, 0, 0);
 }
 
-t_vars	init_vars(t_matrix **shape_3d, int height, int width)
+t_vars	init_vars(t_3d_point **shape_3d, int height, int width)
 {
 	t_img_data	data;
 	t_vars vars;
+	// int	i;
 
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, WINDOW_WIDTH , WINDOW_HEIGHT, "fdf");
@@ -496,13 +424,20 @@ t_vars	init_vars(t_matrix **shape_3d, int height, int width)
 	data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
 	vars.data = data;
 	vars.shape_3d = shape_3d;//
+	// vars.shape_2d = (t_2d_point **)malloc(sizeof(t_2d_point *) * (height));
+	// i = 0;
+	// while (i < height)
+	// {
+	// 	vars.shape_2d[i] = (t_2d_point *)malloc(sizeof(t_2d_point) * (width));
+	// 	i++;
+	// }
 	mlx_hook(vars.win, 2, 1L<<0, handle_keys, &vars);
 	vars.width = width;
 	vars.height = height;
 	return (vars);
 }
 
-void	fdf(t_matrix **shape, int height, int width)
+void	fdf(t_3d_point **shape, int height, int width)
 {
 	// t_point point;
 	t_vars vars;
@@ -544,30 +479,22 @@ char **map_file_to_chars(char *file)
 	return (map);
 }
 
-float	**new_value(int x, int y, int z, int dimension)
+t_3d_point	new_value(int x, int y, int z, int dimension)
 {
-	float	**value;
-	int		i;
+	t_3d_point	value;
 
-	value = (float **)malloc(sizeof(float *) * (dimension));
-	i = 0;
-	while (i < dimension)
-	{
-		value[i] = (float *)malloc(sizeof(float));
-		i++;
-	}
-	value[0][0] = (float)x;
-	value[1][0] = (float)y;
+	value.x = (float)x;
+	value.y = (float)y;
 	if (dimension == 3)
 	{
-		value[2][0] = (float)z;
+		value.z = (float)z;
 	}
 	return (value);
 }
 
-t_matrix **map_chars_to_matrices(char **chars_map, int *height, int *width)
+t_3d_point **map_chars_to_matrices(char **chars_map, int *height, int *width)
 {
-	t_matrix	**shape_3d;
+	t_3d_point	**shape_3d;
 	int	i;
 	int j;
 	char **tmp_ptr;
@@ -578,11 +505,11 @@ t_matrix **map_chars_to_matrices(char **chars_map, int *height, int *width)
 	free_all(tmp_ptr, *width - 1);
 	while (chars_map[*height] != NULL)
 		*height += 1;
-	shape_3d = (t_matrix **)malloc(sizeof(t_matrix *) * (*height));
+	shape_3d = (t_3d_point **)malloc(sizeof(t_3d_point *) * (*height));
 	i = 0;
 	while (i < *height)
 	{
-		shape_3d[i] = (t_matrix *)malloc(sizeof(t_matrix) * (*width));
+		shape_3d[i] = (t_3d_point *)malloc(sizeof(t_3d_point) * (*width));
 		i++;
 	}
 	i = 0;
@@ -592,7 +519,7 @@ t_matrix **map_chars_to_matrices(char **chars_map, int *height, int *width)
 		j = 0;
 		while (j < *width)
 		{
-			(shape_3d[i][j]).value = new_value(i, j, ft_atoi(tmp_ptr[j]), 3);
+			(shape_3d[i][j]) = new_value(i, j, ft_atoi(tmp_ptr[j]), 3);
 			j++;
 		}
 		free_all(tmp_ptr, *width);
@@ -605,7 +532,7 @@ t_matrix **map_chars_to_matrices(char **chars_map, int *height, int *width)
 int main(int ac, char **av)
 {
 	char	**chars_map;
-	t_matrix		**shape_3d;
+	t_3d_point		**shape_3d;
 	int		height;
 	int		width;
 
@@ -614,7 +541,6 @@ int main(int ac, char **av)
 	if (ac != 2)
 		return (1);
 	chars_map = map_file_to_chars(av[1]);
-	// exit(0);
 	if (chars_map == 0)
 		return (0);
 	shape_3d = map_chars_to_matrices(chars_map, &height, &width);

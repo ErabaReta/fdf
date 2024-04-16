@@ -11,7 +11,7 @@
 # define WINDOW_WIDTH 500
 //==
 # define ROTATION_ANGLE 2
-# define TRANSLATION_DISTENCE 3 
+# define TRANSLATION_DISTENCE (ft_max(vars->width ,vars->width ) / 10)
 //=== buttons ====
 # define ESC 53
 # define Q 12
@@ -48,14 +48,13 @@ typedef struct	s_2d_point
 {
 	int	x;
 	int	y;
-	int	visibility;
 }				t_2d_point;
 //===========================
-typedef struct	s_matrix {
-	float		**value;
-	int		rows;
-	int		cols;
-}				t_matrix;
+// typedef struct	s_matrix {
+// 	float		**value;
+// 	int		rows;
+// 	int		cols;
+// }				t_matrix;
 //===========================
 typedef struct	s_vars {
 	int			height;
@@ -63,8 +62,8 @@ typedef struct	s_vars {
 	void		*mlx;
 	void		*win;
 	t_img_data	data;
-	t_matrix	**shape_3d;
-	t_matrix	**shape_2d;
+	t_3d_point	**shape_3d;
+	t_2d_point	**shape_2d;
 }				t_vars;
 //===========================
 typedef struct s_camera	{
@@ -84,8 +83,14 @@ char	*ft_strjoin(char const *s1, char const *s2);
 int	ft_power(int nbr, int power);
 int ft_abs(int nbr);
 int calc_dist(int x, int y, t_2d_point point);
-char	matrix_is_valid(t_matrix matrix);
+// char	matrix_is_valid(t_matrix matrix);
 //=
-float	**new_value(int x, int y, int z, int dimension);
+t_3d_point rotateX_point(t_3d_point point, float angle);
+t_3d_point rotateY_point(t_3d_point point, float angle);
+t_3d_point rotateZ_point(t_3d_point point, float angle);
+void	rotate_shape(t_vars *vars, float angle, char axis);
+//=
+t_3d_point	new_value(int x, int y, int z, int dimension);
 void	draw_map(t_vars *vars);
+int	ft_max(int nbr1, int nbr2);
 #endif
