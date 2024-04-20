@@ -6,12 +6,13 @@
 # include <fcntl.h>
 # include <math.h>
 # include <unistd.h>
+# include <limits.h>
 //==
-# define WINDOW_HEIGHT 500
-# define WINDOW_WIDTH 500
+# define WINDOW_HEIGHT 1000
+# define WINDOW_WIDTH 1000
 //==
 # define ROTATION_ANGLE 2
-# define TRANSLATION_DISTENCE (ft_max(vars->width ,vars->width ) / 10)
+# define TRANSLATION_DISTENCE (ft_max(vars->width ,vars->height ) / 12)
 //=== buttons ====
 # define ESC 53
 # define Q 12
@@ -28,6 +29,12 @@
 # define V 9
 # define UP_ARROW 126
 # define DOWN_ARROW 125
+//=== colors ===
+# define WHITE 0xffffff
+# define BROWN 0xff0000
+# define GREEN 0x009900
+# define CYAN 0x00ffff
+# define BLUE 0x0000ff
 //===========================
 typedef struct	s_img_data {
 	void	*img;
@@ -42,43 +49,44 @@ typedef struct s_3d_point
 	float	x;
 	float	y;
 	float	z;
+	int		color;
 }				t_3d_point;
 //===========================
 typedef struct	s_2d_point
 {
 	int	x;
 	int	y;
+	int	color;
 }				t_2d_point;
-//===========================
-// typedef struct	s_matrix {
-// 	float		**value;
-// 	int		rows;
-// 	int		cols;
-// }				t_matrix;
 //===========================
 typedef struct	s_vars {
 	int			height;
 	int			width;
+	float			xangle;
+	float			yangle;
+	float			zangle;
+	int			xtranslation;
+	int			ytranslation;
+	int			ztranslation;
+	float			zoom;
+	char		projection;
 	void		*mlx;
 	void		*win;
 	t_img_data	data;
 	t_3d_point	**shape_3d;
-	t_2d_point	**shape_2d;
 }				t_vars;
 //===========================
-typedef struct s_camera	{
-	t_3d_point pov;
-	t_3d_point plane;
-}				t_camera;
-//===========================
 char	**ft_split(char const *s, char c);
+size_t	count_words(char const *s, char c);
 size_t	ft_strlen(const char *s);
 void	*ft_memmove(void *dst, const void *src, size_t len);
 void	*free_all(char **ptr, int i);
-int	ft_atoi(const char *str);
+long	ft_atoi(const char *str);
 char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char const *s1, char const *s2);
-
+void	ft_putstr_fd(char *s, int fd);
+int	ft_strncmp(const char *s1, const char *s2, size_t n);
+void	ft_str_tolower(char *str);
 //=
 int	ft_power(int nbr, int power);
 int ft_abs(int nbr);
@@ -90,7 +98,7 @@ t_3d_point rotateY_point(t_3d_point point, float angle);
 t_3d_point rotateZ_point(t_3d_point point, float angle);
 void	rotate_shape(t_vars *vars, float angle, char axis);
 //=
-t_3d_point	new_value(int x, int y, int z, int dimension);
+int	new_value(int x, int y, char *str, t_3d_point *value);
 void	draw_map(t_vars *vars);
 int	ft_max(int nbr1, int nbr2);
 #endif

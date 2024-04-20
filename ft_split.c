@@ -8,7 +8,7 @@ static size_t	indexer(char const *s, char c, size_t i, size_t *end_index)
 	return (i);
 }
 
-static size_t	count_words(char const *s, char c)
+size_t	count_words(char const *s, char c)
 {
 	size_t	i;
 	size_t	count;
@@ -42,7 +42,7 @@ static void	*extracter(char *ptr, size_t *end_index,
 
 void	*free_all(char **ptr, int i)
 {
-	while (i >= 0)
+	while (i >= 0 && ptr != NULL)
 	{
 		free(ptr[i]);
 		i--;
