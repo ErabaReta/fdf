@@ -12,7 +12,7 @@
 # define WINDOW_WIDTH 1000
 //==
 # define ROTATION_ANGLE 2
-# define TRANSLATION_DISTENCE (ft_max(vars->width ,vars->height ) / 12)
+# define TRANSLATION_DISTENCE ((ft_max(vars->width ,vars->height ) / 12) + 1)
 //=== buttons ====
 # define ESC 53
 # define Q 12
@@ -29,6 +29,8 @@
 # define V 9
 # define UP_ARROW 126
 # define DOWN_ARROW 125
+# define SPACE 49
+# define ENTER 36
 //=== colors ===
 # define WHITE 0xffffff
 # define BROWN 0xff0000
@@ -62,6 +64,7 @@ typedef struct	s_2d_point
 typedef struct	s_vars {
 	int			height;
 	int			width;
+	int			top_z;
 	float			xangle;
 	float			yangle;
 	float			zangle;
@@ -70,6 +73,7 @@ typedef struct	s_vars {
 	int			ztranslation;
 	float			zoom;
 	char		projection;
+	char		coords_sestym;
 	void		*mlx;
 	void		*win;
 	t_img_data	data;
@@ -100,5 +104,6 @@ void	rotate_shape(t_vars *vars, float angle, char axis);
 //=
 int	new_value(int x, int y, char *str, t_3d_point *value);
 void	draw_map(t_vars *vars);
-int	ft_max(int nbr1, int nbr2);
+float	ft_max(float nbr1, float nbr2);
+t_3d_point	get_coords(t_vars *vars, int i, int j);
 #endif
