@@ -8,120 +8,15 @@ void	my_mlx_pixel_put(t_img_data *data, int x, int y, int color)
 {
 	char	*dst;
 	int offset;
+	unsigned int *ptr;
 
 	if (y >= WINDOW_HEIGHT || x >= WINDOW_WIDTH || x < 0 || y < 0)
 		return ;
 	offset = y * data->line_length + x * (data->bits_per_pixel / 8);
 	dst = data->addr + offset;
-	*(unsigned int*)dst = color;
+	ptr = (unsigned int*)dst;
+	*ptr = color;
 }
-
-// void	draw_mostatil(t_img_data *img, int l3ard, int tol, t_point point)
-// {
-// 	int i = 0;
-// 	int j = 0;
-
-// 	while (i < l3ard)
-// 	{
-// 		j = 0;
-// 		while (j < tol)
-// 		{
-// 			printf("writed a pixel to x == %d   y == %d\n", point.x + j, point.y + i );
-// 			my_mlx_pixel_put(img, point.x + j, point.y + i, 0x00FF0000);
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// }
-
-// void	draw_mo3ayan(t_img_data *img, int l3ard, int tol, t_point point)
-// {
-// 	int i =0;
-// 	int j =0;
-
-// 	(void)tol;
-// 	while (i < l3ard)
-// 	{
-// 		j = 0;
-// 		while (j < i)
-// 		{
-// 			my_mlx_pixel_put(img, point.x + j, point.y + i, 0x00FF0000);
-// 			j++;
-// 		}
-// 		j = 0;
-// 		while (j < i)
-// 		{
-// 			my_mlx_pixel_put(img, point.x - j, point.y + i, 0x00FF0000);
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// 	int k = 0;
-// 	while (i < 2 * l3ard)
-// 	{
-// 		j = l3ard - k;
-// 		while (j >= 0)
-// 		{
-// 			my_mlx_pixel_put(img, point.x + j, point.y + i, 0x00FF0000);
-// 			j--;
-// 		}
-// 		j = l3ard - k;
-// 		while (j >= 0)
-// 		{
-// 			my_mlx_pixel_put(img, point.x - j, point.y + i, 0x00FF0000);
-// 			j--;
-// 		}
-// 		k++;
-// 		i++;
-// 	}
-
-// }
-
-// void	draw_circle(t_img_data *img, int cho3a3, t_2d_point point)
-// {
-// 	int i = point.y - cho3a3;
-// 	int j;
-
-// 	// while (i < 299)
-// 	// {
-// 	// 	j = 0;
-// 	// 	while (j < 299)
-// 	// 	{
-// 	// 		if (  (ft_power(ft_abs(j - point.x), 2) + ft_power(ft_abs(i - point.y), 2))       == ft_power(cho3a3, 2))
-// 	// 		my_mlx_pixel_put(img, j, i, 0x00FF0000);
-// 	// 		j++;
-// 	// 	}
-// 	// 	i++;
-// 	// }
-// 	while (i < point.y + cho3a3)
-// 	{
-// 		j = point.x - cho3a3;
-// 		while (j < point.x + cho3a3)
-// 		{
-// 			if (calc_dist(j, i, point) <= cho3a3)
-// 			{
-// 				// printf("pixeled the point x ==%d  | y == %d | with dist == %d\n", j, i, calc_dist(j, i, point));
-// 				my_mlx_pixel_put(img, j, i, 0x00FFFFFF);
-// 			}
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// }
-
-// int	draw(int button, int x, int y, void *ptr)
-// {
-// 	t_2d_point point;
-
-// 	point.x = x;
-// 	point.y = y;
-
-// 	(void)button;
-// 	t_vars *vars = (t_vars *)ptr;
-// 	draw_circle(&(vars->data), 10, point);
-// 	mlx_put_image_to_window(vars->mlx, vars->win, vars->data.img, 0, 0);
-// 	return (0);
-// }
 
 t_vars	*get_vars(void)
 {
@@ -148,7 +43,6 @@ void clear_image(t_vars *vars)
 		}
 		i++;
 	}
-	// mlx_put_image_to_window(vars->mlx, vars->win, vars->data.img, 0, 0);
 }
 
 void	translate_shape(t_vars *vars, int distence, char axis)
@@ -176,13 +70,8 @@ void	translate_shape(t_vars *vars, int distence, char axis)
 
 int	ft_close(void)
 {
-	t_vars *vars;
-
-	vars = get_vars();
-	// mlx_destroy_window(vars->mlx, vars->win);
-	// system("leaks fdf");
 	printf ("window closed\n");
-	exit(0);
+	fdf_exiter(get_vars());
 	return (0);
 }
 
@@ -194,80 +83,37 @@ int	handle_keys(int keycode, t_vars *garbage)
 	vars = get_vars();
 	if (keycode == ESC)
 	{
-		// printf("get_coords(vars, 0, 0).z => %f |||  get_coords(vars, vars->height - 1, 0).z => %f  ||| get_coords(vars, 0, vars->width).z ==> %f \n", get_coords(vars, 0, 0).z, get_coords(vars, vars->height - 1, 0).z, get_coords(vars, 0, vars->width - 1).z);
 		mlx_destroy_window(vars->mlx, vars->win);
-		// system("leaks fdf");
-		exit(0);
+		fdf_exiter(vars);
 	}
 	else if ( keycode == Q)
-	{
-		// rotate_shape(vars, ROTATION_ANGLE * (M_PI / 180), 'x');
-		vars->xangle += ROTATION_ANGLE * (M_PI / 180) ;
-	}
+		vars->xangle += ROTATION_ANGLE * (M_PI / 180);
 	else if ( keycode == W)
-	{
-		// rotate_shape(vars, -ROTATION_ANGLE * (M_PI / 180), 'x');
 		vars->xangle -= ROTATION_ANGLE * (M_PI / 180);
-	}
 	else if ( keycode == A)
-	{
-		// rotate_shape(vars, 2 * (M_PI / 180), 'y');
 		vars->yangle += ROTATION_ANGLE * (M_PI / 180);
-	}
 	else if ( keycode == S)
-	{
-		// rotate_shape(vars, -ROTATION_ANGLE * (M_PI / 180), 'y');
 		vars->yangle -= ROTATION_ANGLE * (M_PI / 180);
-	}
-		else if ( keycode == Z)
-	{
-		// rotate_shape(vars, ROTATION_ANGLE * (M_PI / 180), 'z');
+	else if ( keycode == Z)
 		vars->zangle += ROTATION_ANGLE * (M_PI / 180);
-	}
-		else if ( keycode == X)
-	{
-		// rotate_shape(vars, -ROTATION_ANGLE * (M_PI / 180), 'z');
+	else if ( keycode == X)
 		vars->zangle -= ROTATION_ANGLE * (M_PI / 180);
-	}
-		else if ( keycode == E)
-	{
-		// translate_shape(vars, TRANSLATION_DISTENCE, 'x');
+	else if ( keycode == E)
 		vars->xtranslation += TRANSLATION_DISTENCE;
-	}
-		else if ( keycode == R)
-	{
-		// translate_shape(vars, -TRANSLATION_DISTENCE, 'x');
+	else if ( keycode == R)
 		vars->xtranslation -= TRANSLATION_DISTENCE;
-	}
-		else if ( keycode == D)
-	{
-		// translate_shape(vars, TRANSLATION_DISTENCE, 'y');
+	else if ( keycode == D)
 		vars->ytranslation += TRANSLATION_DISTENCE;
-		// printf("here vars->ytranslation ====> %d |||| (ft_max(vars->width ,vars->height )) ===> %f\n", vars->ytranslation, (ft_max(vars->width ,vars->height ) ));
-	}
-		else if ( keycode == F)
-	{
-		// translate_shape(vars, -TRANSLATION_DISTENCE, 'y');
+	else if ( keycode == F)
 		vars->ytranslation -= TRANSLATION_DISTENCE;
-	}
 		else if ( keycode == C)
-	{
-		// translate_shape(vars, TRANSLATION_DISTENCE, 'z');
 		vars->ztranslation += TRANSLATION_DISTENCE;
-	}
-		else if ( keycode == V)
-	{
-		// translate_shape(vars, -TRANSLATION_DISTENCE, 'z');
+	else if ( keycode == V)
 		vars->ztranslation -= TRANSLATION_DISTENCE;
-	}
-		else if (keycode == UP_ARROW)
-	{
+	else if (keycode == UP_ARROW)
 		vars->zoom += 0.5;
-	}
-		else if (keycode == DOWN_ARROW)
-	{
+	else if (keycode == DOWN_ARROW)
 		vars->zoom -= 0.5;
-	}
 	else if (keycode == SPACE)
 	{
 		if (vars->projection == 'o')
@@ -281,6 +127,15 @@ int	handle_keys(int keycode, t_vars *garbage)
 			vars->coords_sestym = 's';
 		else
 			vars->coords_sestym = 'c';
+		vars->zoom = 500.0 / ft_max(ft_max(vars->width ,vars->height), vars->top_z);
+	}
+	else if (keycode == DELETE)
+	{
+		if (vars->orthognal_type == 'i')
+			vars->orthognal_type = 'p';
+		else
+			vars->orthognal_type = 'i';
+		init_shape(vars);
 	}
 	else
 	{
@@ -288,20 +143,20 @@ int	handle_keys(int keycode, t_vars *garbage)
 	}
 	if (vars->zoom <= 0)
 		vars->zoom = 0.5;
+	if(vars->zoom > 1000.0)
+		vars->zoom = 1000.0;
 	if (vars->xangle >= (2 * M_PI))
 		vars->xangle -= (2 * M_PI);
 	if (vars->yangle >= (2 * M_PI))
 		vars->yangle -=  (2 * M_PI);
 	if (vars->zangle >= (2 * M_PI))
 		vars->zangle -= (2 * M_PI);
-
 	if (vars->xangle <= -(2 * M_PI))
 		vars->xangle += (2 * M_PI);
 	if (vars->yangle <= -(2 * M_PI))
 		vars->yangle +=  (2 * M_PI);
 	if (vars->zangle <= -(2 * M_PI))
 		vars->zangle += (2 * M_PI);
-	// printf("xtranslation => %f  | ytr => %f | ztr => %f\n", vars->xangle * (180 / M_PI), vars->yangle  * (180 / M_PI), vars->zangle  * (180 / M_PI));
 	clear_image(vars);
 	draw_map(vars);
 	return (0);
@@ -314,54 +169,34 @@ t_3d_point	turn_spheric(t_vars *vars, int i, int j)
 		float alhpa;
 		float beta;
 
-		r = (vars->shape_3d[i][j].z + 1000);
-		alhpa = ((vars->shape_3d[i][j].x * 360) / vars->width) * (M_PI / 180);
-		beta  = ((vars->shape_3d[i][j].y * 180) / vars->height)  * (M_PI / 180);
-	// printf("alpha => %f,    beta ==> %f ", alhpa * (180 / M_PI), beta * (180 / M_PI));
-
-		point3d.x =   r * sin(beta) * cos(alhpa);
-		point3d.y = r * sin(beta) * sin(alhpa);
-		point3d.z =  r * cos(beta);
-
-
-
+		r = (vars->shape_3d[i][j].z + ft_max(ft_max(vars->width ,vars->height), vars->top_z)) * 0.75;
+		alhpa = (((vars->shape_3d[i][j].x + (vars->height / 2)) * 360) / vars->width) * (M_PI / 180);
+		beta  = (((vars->shape_3d[i][j].y + (vars->height / 2)) * 180) / vars->height)  * (M_PI / 180);
+		point3d.x =   r * sin(-beta) * cos(-alhpa);
+		point3d.y = r * sin(-beta) * sin(-alhpa);
+		point3d.z =  r * cos(-beta);
 		point3d.color = vars->shape_3d[i][j].color;
-
 		return (point3d);
 }
 
 t_3d_point	get_coords(t_vars *vars, int i, int j)
 {
 	t_3d_point	point3d;
-
+	
 	point3d = vars->shape_3d[i][j];
 	if (vars->coords_sestym == 's')
 	{
 		point3d = turn_spheric(vars, i, j);
 	}
 	point3d = rotateZ_point(point3d, vars->zangle);
-	point3d = rotateX_point(point3d, vars->xangle);
+	point3d = rotateX_point(point3d, vars->xangle); 
 	point3d = rotateY_point(point3d, vars->yangle);
-
-
-
 	point3d.color = vars->shape_3d[i][j].color;
 	point3d.x += vars->xtranslation;
 	point3d.y += vars->ytranslation;
 	point3d.z += vars->ztranslation;
 	return (point3d);
 }
-
-// t_3d_point	apply_isometric(t_3d_point	point)
-// {
-// 	t_3d_point new_point;
-
-// 	new_point.x = sqrt(0.5) * point.x + -sqrt(0.5) * point.z;
-// 	new_point.y = sqrt(0.1666666667) * point.x + sqrt(0.3333333333) * point.y + sqrt(0.1666666667) * point.z;
-// 	new_point.z = sqrt(0.3333333333) * point.x + -sqrt(0.3333333333) * point.y + sqrt(0.3333333333) * point.z;
-// 	new_point.color = point.color;
-// 	return (new_point);
-// }
 
 t_2d_point perspective_projection(t_3d_point point3d, float fov)
 {
@@ -389,12 +224,8 @@ t_2d_point project_point(t_vars *vars, int i, int j)
 {
 	t_2d_point	point2d;
 	t_3d_point	point3d;
-	// float x_proj;
-	// float y_proj;
 
 	point3d = get_coords(vars, i, j);
-
-
 	if (vars->projection == 'p')
 	{
 		return (perspective_projection(point3d, vars->zoom));
@@ -402,35 +233,8 @@ t_2d_point project_point(t_vars *vars, int i, int j)
     point2d.x = point3d.x * vars->zoom + WINDOW_WIDTH / 2;
     point2d.y = point3d.y * vars->zoom + WINDOW_HEIGHT / 2;
 	point2d.color = point3d.color;
-
-	// printf("point 3d x = %f | y = %f | z = %f  turn into 2d point x = %d | y = %d\n", point3d.x, point3d.y, point3d.z, point2d.x, point2d.y);
-
     return point2d;
 }
-
-// void	shape_3d_to_2d(t_vars	*vars)
-// {
-// 	int 		i;
-// 	int			j;
-
-// 	i = 0;
-// 	while (i < vars->height)
-// 	{
-// 		j = 0;
-// 		while (j < vars->width)
-// 		{
-// 			//The general equation of a sphere is: (x - a)² + (y - b)² + (z - c)² = r²
-// 			//equation of plane is : a(x  - x0) + b(y - y0) + c(z - z0) = 0
-// 			// point3d.x = vars->shape_3d[i][j].x - 20;
-// 			// point3d.y = vars->shape_3d.y  - 20;
-// 			// point3d.z = (vars->shape_3d[i][j].value[2][0]) - 20;
-// 			vars->shape_2d[i][j] = project_point(vars->shape_3d[i][j]);
-// 			printf("the 3d point x = %f , y = %f ,  z = %f turn into 2d point x = %d ,  y = %d \n", vars->shape_3d[i][j].x, vars->shape_3d[i][j].y, vars->shape_3d[i][j].z, vars->shape_2d[i][j].x, vars->shape_2d[i][j].y);
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// }
 
 float	ft_min(float nbr1, float nbr2)
 {
@@ -457,31 +261,25 @@ void	line_between_2points(t_vars	*vars, t_2d_point point1, t_2d_point point2, in
 		return ;
 	if ((point2.y - point1.y) != 0)
 	{
-		y = ft_min(point1.y, point2.y);
-		while (y < 0)
-			y++;
+		y = ft_max(ft_min(point1.y, point2.y), 0);
 		while (y <= ft_max(point1.y, point2.y) && y < WINDOW_HEIGHT)
 		{
-			// (y -y1) =[(y2 - y1) / (x2 - x1)] (x - x1) 
 			x = (((y - point1.y) * (point2.x - point1.x)) / (point2.y - point1.y) ) + point1.x;
 			my_mlx_pixel_put(&(vars->data), x, y, color);
 			y++;
 		}
 	} if (point2.x - point1.x != 0)
 	{
-		x = ft_min(point1.x, point2.x);
-		while (x < 0)
-			x++;
+		x = ft_max(ft_min(point1.x, point2.x), 0);
 		while (x <= ft_max(point1.x, point2.x) && x < WINDOW_WIDTH)
 		{
-			// if (calc_dist(x, y, point1) + calc_dist(x, y, point2) == calc_dist(point1.x, point1.y, point2))  
-			// (y -y1) =[(y2 - y1) / (x2 - x1)] (x - x1) 
 			y = (((point2.y - point1.y) * (x - point1.x )) / (point2.x - point1.x)) + point1.y;
 			my_mlx_pixel_put(&(vars->data), x, y, color);
 			x++;
 		}
 	}
 }
+
 int calc_color(int z1, int z2, int color1, int color2)
 {
 	if (z1 >= z2)
@@ -508,6 +306,24 @@ void	draw_lines(t_vars *vars, int i, int j)
 		color = calc_color(vars->shape_3d[i][j].z, vars->shape_3d[i][j + 1].z, vars->shape_3d[i][j].color, vars->shape_3d[i][j + 1].color);
 		line_between_2points(vars, point1, point2, color);
 	}
+	if ((j + 1 == vars->width) && vars->coords_sestym == 's')
+	{
+		point2 = project_point(vars, i ,0);
+		color = calc_color(vars->shape_3d[i][j].z, vars->shape_3d[i][0].z, vars->shape_3d[i][j].color, vars->shape_3d[i][0].color);
+		line_between_2points(vars, point1, point2, color);
+	}
+}
+
+void draw_scope(t_vars *vars)
+{
+	int i= 0;
+
+	while (i < WINDOW_HEIGHT)
+	{
+		my_mlx_pixel_put(&(vars->data), WINDOW_HEIGHT /2 , i, 0xffffff);
+		my_mlx_pixel_put(&(vars->data), i , WINDOW_HEIGHT /2, 0xffffff);
+		i++;
+	}
 }
 
 void	draw_map(t_vars *vars)
@@ -516,26 +332,7 @@ void	draw_map(t_vars *vars)
 	int	j;
 	int	end_i;
 	int	end_j;
-	// t_3d_point point3;
-	// t_2d_point point2d;
 
-	// i = 0;
-	// while (i < vars->height)
-	// {
-	// 	j = 0;
-	// 	while (j < vars->width)
-	// 	{
-	// // 		// draw_circle(&(vars->data), 2, point2d);
-	// // 		point2d = project_point(vars, i, j);
-	// // 		my_mlx_pixel_put(&(vars->data), point2d.x, point2d.y, 0x00FFFFFF);
-	// 		j++;
-	// 	}
-	// 	i++;
-	// }
-	// printf("xangle => %f || yangle => %f || zangle => %f\n", vars->xangle * (180 / M_PI), vars->yangle * (180 / M_PI), vars->zangle * (180 / M_PI));///
-	
-
-//===========
 	if (get_coords(vars, 0, 0).z <= get_coords(vars, vars->height - 1, 0).z)
 	{
 		i = 0;
@@ -548,7 +345,7 @@ void	draw_map(t_vars *vars)
 	}
 	while (i <= end_i)
 	{
-		if (get_coords(vars, 0, 0).z <= get_coords(vars, 0, vars->width - 1).z)
+		if (get_coords(vars, 0, 0).z < get_coords(vars, 0, vars->width - 1).z)
 		{
 			j = 0;
 			end_j = vars->width - 1 ;
@@ -560,20 +357,37 @@ void	draw_map(t_vars *vars)
 		}
 		while (j <= end_j)
 		{
-			// printf("i ==> %d || j ==> %d\n", i, j);
 			draw_lines(vars, ft_abs(i), ft_abs(j));
-
 			j++;
 		}
 		i++;
 	}
+	draw_scope(vars);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->data.img, 0, 0);
 }
 
-// int	max_height(t_3d_point **shape_3d, int height, int width)
-// {
-
-// }
+void	init_shape(t_vars *vars)
+{
+	vars->projection = 'o';
+	vars->coords_sestym = 'c';
+	if (vars->orthognal_type == 'i')
+	{
+		vars->xangle = (90 - 35.264) * (M_PI / 180);
+		vars->yangle = 0 * (M_PI / 180);
+		vars->zangle = -45 * (M_PI / 180);
+		vars->zoom = 500.0 / ft_max(ft_max(vars->width ,vars->height), vars->top_z);
+	}
+	else
+	{
+		vars->xangle = 0;
+		vars->yangle = 0;
+		vars->zangle = 0;
+		vars->zoom = 500.0 / ft_max(vars->width ,vars->height);
+	}
+	vars->xtranslation = -0 * TRANSLATION_DISTENCE;
+	vars->ytranslation = 0 * TRANSLATION_DISTENCE;
+	vars->ztranslation = -8 * TRANSLATION_DISTENCE;
+}
 
 t_vars	init_vars(t_3d_point **shape_3d, int height, int width)
 {
@@ -588,15 +402,9 @@ t_vars	init_vars(t_3d_point **shape_3d, int height, int width)
 	vars->data = data;
 	vars->width = width;
 	vars->height = height;
-	vars->shape_3d = shape_3d;//
-	vars->projection = 'o';
-	vars->xangle = 60 * (M_PI / 180);
-	vars->yangle = 0 * (M_PI / 180);
-	vars->zangle = (-45) * (M_PI / 180);
-	vars->xtranslation = 0;
-	vars->ytranslation = 2 * TRANSLATION_DISTENCE;
-	vars->ztranslation = -6 * TRANSLATION_DISTENCE;
-	vars->zoom = 500.0 / ft_max(ft_max(width ,height), vars->top_z);//4.5;
+	vars->shape_3d = shape_3d;
+	vars->orthognal_type = 'i';
+	init_shape(vars);
 	mlx_hook(vars->win, 2, 1L<<0, handle_keys, vars);
 	mlx_hook(vars->win, 17, 1L<<0, ft_close, vars);
 	return (*vars);
@@ -604,7 +412,6 @@ t_vars	init_vars(t_3d_point **shape_3d, int height, int width)
 
 void	fdf(t_3d_point **shape, int height, int width)
 {
-	// t_point point;
 	t_vars vars;
  
 	vars = init_vars(shape, height, width);
@@ -613,41 +420,7 @@ void	fdf(t_3d_point **shape, int height, int width)
 	mlx_loop(vars.mlx);
 }
 
-char **map_file_to_chars(char *file)
-{
-	char	**map;
-	char	*str;
-	char	*tmp;
-	int		readed;
-
-
-	int fd = open(file, O_RDONLY);
-	if (fd < 0)
-	{
-		ft_putstr_fd("Error: invalid file or permession\n", 2);
-		return 0;
-	}
-	str = ft_strdup("");
-	tmp = (char *)malloc(sizeof(char) * 1000001);
-	if (str == NULL || tmp == NULL)
-	{
-		ft_putstr_fd("Error: malloc failed to allocate\n", 2);
-		return 0;
-	}
-	readed = 1;
-	while (readed > 0)
-	{
-		readed = read(fd, tmp , 1000000);
-		tmp[readed] = '\0';
-		str = ft_strjoin(str, tmp);
-		// printf("readed = %d | tmp %s\n", readed, tmp);
-	}
-	map = ft_split(str, '\n');
-	close(fd);
-	return (free(tmp), free(str), map);
-}
-
-long	ft_atoi_hex(char *str)
+long	ft_atohex(char *str)
 {
 	size_t			i;
 	size_t			nbr;
@@ -684,17 +457,14 @@ int	set_color(char *str, int *color, int z)
 		str++;
 	if (*str == '\0')
 	{
-		(void)z;
-		// if (z > 75)
+		if (z > 100)
 			*color = WHITE;
-		// else if (z > 5)
-		// 	*color = BROWN;
-		// else if (z > -2)
-		// 	*color = GREEN;
-		// else if (z > -20)
-		// 	*color = CYAN;
-		// else
-		// 	*color = BLUE;
+		else if (z > 20)
+			*color = BROWN;
+		else if (z > 0 )
+			*color = GREEN;
+		else
+			*color = BLUE;
 		return (0);
 	}
 	if (ft_strncmp(str, ",0x", 3) != 0)
@@ -707,7 +477,7 @@ int	set_color(char *str, int *color, int z)
 			return (-1);
 		i++;
 	}
-	tmp = ft_atoi_hex(str + 3);
+	tmp = ft_atohex(str + 3);
 	if (tmp >= 2147483648)
 		return (-1);
 	*color = tmp;
@@ -745,12 +515,6 @@ t_3d_point **map_chars_to_coords(char **chars_map, int height, int width)
 	int j;
 	char **tmp_ptr;
 
-	// tmp_ptr = ft_split(chars_map[0], ' ');
-	// while(tmp_ptr[*width] != NULL)
-	// 	*width += 1;
-	// free_all(tmp_ptr, *width - 1);
-	// while (chars_map[*height] != NULL)
-	// 	*height += 1;
 	shape_3d = (t_3d_point **)malloc(sizeof(t_3d_point *) * (height));
 	i = 0;
 	while (i < height)
@@ -765,10 +529,8 @@ t_3d_point **map_chars_to_coords(char **chars_map, int height, int width)
 		j = 0;
 		while (j < width)
 		{
-			if (new_value(i  /* - (height / 2)*/, j /* - (width / 2)*/, tmp_ptr[j], &(shape_3d[i][j])) == -1)
-			{
+			if (new_value(i  - (height / 2), j  - (width / 2), tmp_ptr[j], &(shape_3d[i][j])) == -1)
 				return free_all(tmp_ptr, width);
-			}
 			j++;
 		}
 		free_all(tmp_ptr, width);
@@ -777,41 +539,7 @@ t_3d_point **map_chars_to_coords(char **chars_map, int height, int width)
 	return (shape_3d);
 }
 
-int	check_height_width(char **chars_map, int *height, int *width)
-{
-	int	tmp;
 
-	*width = count_words(chars_map[0], ' ');
-	while (chars_map[*height] != NULL)
-	{
-		tmp = count_words(chars_map[*height], ' ');
-		if (tmp != *width)
-		{
-			ft_putstr_fd("Error: wrong line lenght\n", 2);
-			return (-1);
-		}
-		*width = tmp;
-		*height += 1;
-	}
-	if (*width <= 0 || *height <= 0)
-	{
-		ft_putstr_fd("Error: no data found\n", 2);
-		return (-1);
-	}
-	return (0);
-}
-
-
-int	check_file_name(char *file)
-{
-	if (ft_strlen(file) <= 4
-		|| ft_strncmp(&file[ft_strlen(file) - 4], ".fdf", 4) != 0)
-	{
-		ft_putstr_fd("Error: file name should end with .fdf\n", 2);
-		return (-1);
-	}
-	return (0);
-}
 
 int main(int ac, char **av)
 {
@@ -831,63 +559,8 @@ int main(int ac, char **av)
 		return (1);
 	}
 	get_vars()->top_z = 0;
-	// if (ac == 2 || (ac ==3 && strncmp(av[2], "cartesian", 7) == 0))
-		get_vars()->coords_sestym = 'c';
-	// else if (ac ==3 && strncmp(av[2], "spheric", 7) == 0)
-		// get_vars()->coords_sestym = 's';
-	// else
-	// {
-		// ft_putstr_fd("Error: bad arguments\n\t-->./fdf file.fdf\n\t-->./fdf file.fdf spheric\n\t-->./fdf file.fdf spheric", 2);
-	// }
 	shape_3d = map_chars_to_coords(chars_map, height, width);
-	// printf("height = > %d || width => %d\n", height, width);//
-
-	// for (int i = 0; i < height; i++)
-	// {
-	// 	for (int j = 0; j < width ; j++)
-	// 	{
-	// 		printf("point[%d][%d]  x => %f | y => %f | z => %f\n", i, j, shape_3d[i][j].x, shape_3d[i][j].y, shape_3d[i][j].z);//
-	// 	}
-	// }
-	//====================================
-	// shape_3d[0][1].x = 0;
-	// shape_3d[0][1].y = 0;
-	// //=
-	// shape_3d[0][2].x = 1;
-	// shape_3d[0][2].y = 0;
-	// //=
-	// shape_3d[1][0].x = 0;
-	// shape_3d[1][0].y = 0;
-	// //=
-	// shape_3d[1][1].x = 0;
-	// shape_3d[1][1].y = 0;
-	// //=
-	// shape_3d[1][2].x = 1;
-	// shape_3d[1][2].y = 0;
-	// //=
-	// shape_3d[1][3].x = 1;
-	// shape_3d[1][3].y = 0;
-	// //=
-	// shape_3d[2][0].x = 0;
-	// shape_3d[2][0].y = 1;
-	// //=
-	// shape_3d[2][1].x = 0;
-	// shape_3d[2][1].y = 1;
-	// //=
-	// shape_3d[2][2].x = 1;
-	// shape_3d[2][2].y = 1;
-	// //=
-	// shape_3d[2][3].x = 1;
-	// shape_3d[2][3].y = 1;
-	// //=
-	// shape_3d[3][1].x = 0;
-	// shape_3d[3][1].y = 1;
-	// //=
-	// shape_3d[3][2].x = 1;
-	// shape_3d[3][2].y = 1;
-	// //=
-
-	//====================================
+	free_all(chars_map, height);//
 	if (shape_3d == NULL)
 		return (1);
 	fdf(shape_3d, height, width);
