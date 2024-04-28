@@ -11,6 +11,6 @@ void fdf_exiter(t_vars *vars)
 		i++;
 	}
 	free(vars->shape_3d);
-	system("leaks fdf");
+	// system("leaks fdf");
 	exit(0);
 }
