@@ -99,10 +99,9 @@ int	check_height_width(char **chars_map, int *height, int *width);
 int	check_file_name(char *file);
 char **map_file_to_chars(char *file);
 //=
-int	ft_power(int nbr, int power);
 int ft_abs(int nbr);
-int calc_dist(int x, int y, t_2d_point point);
-// char	matrix_is_valid(t_matrix matrix);
+float	ft_max(float nbr1, float nbr2);
+float	ft_min(float nbr1, float nbr2);
 //=
 t_3d_point rotateX_point(t_3d_point point, float angle);
 t_3d_point rotateY_point(t_3d_point point, float angle);
@@ -116,5 +115,28 @@ t_3d_point	get_coords(t_vars *vars, int i, int j);
 t_vars	*get_vars(void);
 void	init_shape(t_vars *vars);
 //=
+t_3d_point **map_chars_to_coords(char **chars_map, int height, int width);
+int	new_value(int y, int x, char *str, t_3d_point *value);
+int	set_color(char *str, int *color, int z);
+long	ft_atohex(char *str);
+int	color_decider(int *color, int z);
+//=
 void fdf_exiter(t_vars *vars);
+//=
+int	ft_close(void);
+int	handle_keys(int keycode, t_vars *garbage);
+t_vars	init_vars(t_3d_point **shape_3d, int height, int width);
+//=
+void	draw_map(t_vars *vars);
+void	rendering_direction(int *i, int *end_i);
+void	draw_lines(t_vars *vars, int i, int j);
+int calc_color(int z1, int z2, int color1, int color2);
+void	line_between_2points(t_vars	*vars, t_2d_point point1, t_2d_point point2, int color);
+//=
+t_2d_point project_point(t_vars *vars, int i, int j);
+t_2d_point perspective_projection(t_3d_point point3d, float fov);
+t_3d_point	get_coords(t_vars *vars, int i, int j);
+t_3d_point	turn_spheric(t_vars *vars, int i, int j);
+//=
+void	my_mlx_pixel_put(t_img_data *data, int x, int y, int color);
 #endif
