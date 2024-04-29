@@ -1,7 +1,7 @@
 CC = cc
 RM = rm -rf
-CFLAGS = -Wall -Wextra -Werror  -O3 #-fsanitize=address
-CFILES = main.c ft_split.c ft_strlen.c ft_memmove.c ft_atoi.c ft_math.c ft_strdup.c ft_strjoin.c rotate_shape.c ft_putstr_fd.c ft_strncmp.c ft_str_tolower.c file_parsing.c exiter.c data_parsing.c init.c renderer.c projection.c
+CFLAGS = -Wall -Wextra -Werror -O3 -fsanitize=address
+CFILES = main.c ft_split.c ft_strlen.c ft_memmove.c ft_atoi.c ft_math.c ft_strdup.c ft_strjoin.c rotate_shape.c ft_putstr_fd.c ft_strncmp.c ft_str_tolower.c file_parsing.c exiter.c data_parsing.c init.c renderer.c projection.c events_handling.c
 OFILES = $(CFILES:.c=.o)
 NAME = fdf
 
