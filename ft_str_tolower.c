@@ -6,13 +6,15 @@
 /*   By: eouhrich <eouhrich@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 09:41:03 by eouhrich          #+#    #+#             */
-/*   Updated: 2024/04/19 10:37:58 by eouhrich         ###   ########.fr       */
+/*   Updated: 2024/04/28 18:54:54 by eouhrich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "fdf.h"
+
 void	ft_str_tolower(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i] != '\0')

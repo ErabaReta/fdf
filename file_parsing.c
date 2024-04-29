@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   file_parsing.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eouhrich <eouhrich@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/28 18:30:08 by eouhrich          #+#    #+#             */
+/*   Updated: 2024/04/28 18:52:03 by eouhrich         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 int	check_height_width(char **chars_map, int *height, int *width)
@@ -34,36 +46,48 @@ int	check_file_name(char *file)
 	return (0);
 }
 
-char **map_file_to_chars(char *file)
+char	**reader(int fd, char *str, char *tmp)
 {
-	char	**map;
-	char	*str;
-	char	*tmp;
 	int		readed;
+	char	**map;
 
-	int fd = open(file, O_RDONLY);
-	if (fd < 0)
-	{
-		ft_putstr_fd("Error: invalid file or permession\n", 2);
-		return 0;
-	}
-	str = ft_strdup("");
-	tmp = (char *)malloc(sizeof(char) * 1000001);
-	if (str == NULL || tmp == NULL)
-	{
-		ft_putstr_fd("Error: malloc failed to allocate\n", 2);
-		return 0;
-	}
 	readed = 1;
 	while (readed > 0)
 	{
-		readed = read(fd, tmp , 1000000);
+		readed = read(fd, tmp, 1000000);
 		tmp[readed] = '\0';
 		str = ft_strjoin(str, tmp);
+		if (str == NULL)
+		{
+			ft_putstr_fd("Error: malloc failed to allocate\n", 2);
+			return (0);
+		}
 	}
 	map = ft_split(str, '\n');
-	close(fd);
 	free(tmp);
 	free(str);
+	close(fd);
 	return (map);
+}
+
+char	**map_file_to_chars(char *file)
+{
+	char	*tmp;
+	char	*str;
+	int		fd;
+
+	fd = open(file, O_RDONLY);
+	if (fd < 0)
+	{
+		ft_putstr_fd("Error: invalid file or permession\n", 2);
+		return (0);
+	}
+	str = ft_strdup("");
+	tmp = (char *)malloc(sizeof(char) * 1000001);
+	if (file == NULL || tmp == NULL)
+	{
+		ft_putstr_fd("Error: malloc failed to allocate\n", 2);
+		return (0);
+	}
+	return (reader(fd, str, tmp));
 }

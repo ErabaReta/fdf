@@ -6,53 +6,53 @@
 /*   By: eouhrich <eouhrich@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 17:57:38 by eouhrich          #+#    #+#             */
-/*   Updated: 2024/04/28 17:57:39 by eouhrich         ###   ########.fr       */
+/*   Updated: 2024/04/29 11:45:48 by eouhrich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-t_3d_point rotateX_point(t_3d_point point, float angle)
+t_3d_point	rotatex_point(t_3d_point point, float angle)
 {
-    t_3d_point	rotatedPoint;
-    float		sinAngle;
-    float		cosAngle;
+	t_3d_point	rotated_point;
+	float		sin_angle;
+	float		cos_angle;
 
-	sinAngle = sin(angle);
-	cosAngle = cos(angle);
-    rotatedPoint.x = point.x;
-    rotatedPoint.y = point.y * cosAngle - point.z * sinAngle;
-    rotatedPoint.z = point.y * sinAngle + point.z * cosAngle;
-	rotatedPoint.color = point.color;
-    return rotatedPoint;
+	sin_angle = sin(angle);
+	cos_angle = cos(angle);
+	rotated_point.x = point.x;
+	rotated_point.y = point.y * cos_angle - point.z * sin_angle;
+	rotated_point.z = point.y * sin_angle + point.z * cos_angle;
+	rotated_point.color = point.color;
+	return (rotated_point);
 }
 
-t_3d_point rotateY_point(t_3d_point point, float angle)
+t_3d_point	rotatey_point(t_3d_point point, float angle)
 {
-    t_3d_point	rotatedPoint;
-    float		sinAngle;
-    float		cosAngle;
+	t_3d_point	rotated_point;
+	float		sin_angle;
+	float		cos_angle;
 
-	sinAngle = sin(angle);
-	cosAngle = cos(angle);
-    rotatedPoint.x = point.x * cosAngle + point.z * sinAngle;
-    rotatedPoint.y = point.y;
-    rotatedPoint.z = -point.x * sinAngle + point.z * cosAngle;
-	rotatedPoint.color = point.color;
-    return rotatedPoint;
+	sin_angle = sin(angle);
+	cos_angle = cos(angle);
+	rotated_point.x = point.x * cos_angle + point.z * sin_angle;
+	rotated_point.y = point.y;
+	rotated_point.z = -point.x * sin_angle + point.z * cos_angle;
+	rotated_point.color = point.color;
+	return (rotated_point);
 }
 
-t_3d_point rotateZ_point(t_3d_point point, float angle)
+t_3d_point	rotatez_point(t_3d_point point, float angle)
 {
-    t_3d_point	rotatedPoint;
-    float		sinAngle;
-    float		cosAngle;
+	t_3d_point	rotated_point;
+	float		sin_angle;
+	float		cos_angle;
 
-	sinAngle = sin(angle);
-	cosAngle = cos(angle);
-    rotatedPoint.x = point.x * cosAngle - point.y * sinAngle;
-    rotatedPoint.y = point.x * sinAngle + point.y * cosAngle;
-    rotatedPoint.z = point.z;
-	rotatedPoint.color = point.color;
-    return rotatedPoint;
+	sin_angle = sin(angle);
+	cos_angle = cos(angle);
+	rotated_point.x = point.x * cos_angle - point.y * sin_angle;
+	rotated_point.y = point.x * sin_angle + point.y * cos_angle;
+	rotated_point.z = point.z;
+	rotated_point.color = point.color;
+	return (rotated_point);
 }

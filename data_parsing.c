@@ -6,7 +6,7 @@
 /*   By: eouhrich <eouhrich@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 11:31:53 by eouhrich          #+#    #+#             */
-/*   Updated: 2024/04/28 11:31:54 by eouhrich         ###   ########.fr       */
+/*   Updated: 2024/04/28 18:20:54 by eouhrich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,9 +120,9 @@ t_3d_point	**map_chars_to_coords(char **chars_map, int height, int width)
 		j = 0;
 		while (j < width)
 		{
-			if (new_value(i  - (height / 2), j  - (width / 2),
-				tmp_ptr[j], &(shape_3d[i][j])) == -1)
-				return free_all(tmp_ptr, width);
+			if (new_value(i - (height / 2), j - (width / 2),
+					tmp_ptr[j], &(shape_3d[i][j])) == -1)
+				return (free_all(tmp_ptr, width));
 			j++;
 		}
 		free_all(tmp_ptr, width);

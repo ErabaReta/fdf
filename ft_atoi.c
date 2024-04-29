@@ -6,7 +6,7 @@
 /*   By: eouhrich <eouhrich@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 07:24:21 by eouhrich          #+#    #+#             */
-/*   Updated: 2024/04/18 05:22:05 by eouhrich         ###   ########.fr       */
+/*   Updated: 2024/04/28 18:52:22 by eouhrich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ long	ft_atoi(const char *str)
 	size_t			nbr;
 	int				sign;
 	int				counter;
-	
+
 	i = 0;
 	counter = 0;
 	sign = sign_giver((char *)str, &i);
