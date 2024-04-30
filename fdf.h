@@ -6,7 +6,7 @@
 /*   By: eouhrich <eouhrich@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 18:21:55 by eouhrich          #+#    #+#             */
-/*   Updated: 2024/04/29 13:28:41 by eouhrich         ###   ########.fr       */
+/*   Updated: 2024/04/29 14:48:03 by eouhrich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@
 //==
 # define WINDOW_HEIGHT 1000
 # define WINDOW_WIDTH 1000
-//==
-# define ROTATION_ANGLE 1
 //=== buttons ====
 # define ESC 53
 # define Q 12

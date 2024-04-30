@@ -1,22 +1,33 @@
 CC = cc
 RM = rm -rf
 CFLAGS = -Wall -Wextra -Werror -O3 -fsanitize=address
-CFILES = main.c ft_split.c ft_strlen.c ft_memmove.c ft_atoi.c ft_math.c ft_strdup.c ft_strjoin.c rotate_shape.c ft_putstr_fd.c ft_strncmp.c ft_str_tolower.c file_parsing.c exiter.c data_parsing.c init.c renderer.c projection.c events_handling.c
-OFILES = $(CFILES:.c=.o)
+SRC = src/data_parsing.c src/exiter.c src/ft_atoi.c src/ft_math.c src/ft_memmove.c src/ft_putstr_fd.c src/ft_split.c src/ft_str_tolower.c src/ft_strdup.c src/ft_strjoin.c src/ft_strlen.c src/ft_strncmp.c src/rotate_shape.c
+CFILES = events_handling.c file_parsing.c init.c main.c projection.c renderer.c
+CFILES_BONUS = $(addprefix _bonus/,$(CFILES:.c=_bonus.c))
+OFILES = $(CFILES:.c=.o) $(SRC:.c=.o)
+OFILES_BONUS = $(CFILES_BONUS:.c=.o) $(SRC:.c=.o)
 NAME = fdf
-
+NAME_BONUS = fdf_bonus
+MLX_FLAGS = -lmlx -framework OpenGL -framework AppKit  -lm
+INCLUDES = -I./ 	-I_bonus
 all : $(NAME)
 
+bonus : $(NAME_BONUS)
+
 $(NAME) : $(OFILES)
-	$(CC)  $(OFILES) $(CFLAGS)  -lmlx -framework OpenGL -framework AppKit  -lm -o $(NAME)
+	$(CC)  $(OFILES) $(CFLAGS) $(INCLUDES) $(MLX_FLAGS)  -o $(NAME)
+
+$(NAME_BONUS) : $(OFILES_BONUS)
+	$(CC)  $(OFILES_BONUS) $(CFLAGS) $(INCLUDES)  $(MLX_FLAGS) -o $(NAME_BONUS)
 
 .c.o:
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES)  -c $< -o $@
 
 clean :
-	$(RM) $(OFILES) $(BONUS_OFILES) $(BONUS_OFILES)
+	$(RM) $(OFILES) $(BONUS_OFILES) $(SRC:.c=.o)
 
 fclean : clean
-	$(RM) $(NAME) $(BONUS_NAME)
+	$(RM) $(NAME)
+	$(RM) $(NAME_BONUS)
 
 re: fclean all

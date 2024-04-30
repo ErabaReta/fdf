@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   file_parsing.c                                     :+:      :+:    :+:   */
+/*   file_parsing_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eouhrich <eouhrich@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 18:30:08 by eouhrich          #+#    #+#             */
-/*   Updated: 2024/04/30 16:17:11 by eouhrich         ###   ########.fr       */
+/*   Updated: 2024/04/30 16:49:44 by eouhrich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "fdf_bonus.h"
 
 int	check_height_width(char **chars_map, int *height, int *width)
 {
