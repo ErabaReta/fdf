@@ -1,20 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eouhrich <eouhrich@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 11:26:41 by eouhrich          #+#    #+#             */
-/*   Updated: 2024/04/30 16:30:12 by eouhrich         ###   ########.fr       */
+/*   Updated: 2024/04/30 16:50:43 by eouhrich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
+#include "fdf_bonus.h"
 
 void	my_mlx_pixel_put(t_img_data *data, int x, int y, int color)
 {
@@ -35,6 +31,24 @@ t_vars	*get_vars(void)
 	static t_vars	vars;
 
 	return (&vars);
+}
+
+void	clear_image(t_vars *vars)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < WINDOW_HEIGHT)
+	{
+		j = 0;
+		while (j < WINDOW_WIDTH)
+		{
+			my_mlx_pixel_put(&(vars->data), j, i, 0x00);
+			j++;
+		}
+		i++;
+	}
 }
 
 void	fdf(t_3d_point **shape, int height, int width)

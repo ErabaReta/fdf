@@ -1,33 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   events_handling.c                                  :+:      :+:    :+:   */
+/*   fdf_bonus.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eouhrich <eouhrich@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/29 10:28:41 by eouhrich          #+#    #+#             */
-/*   Updated: 2024/04/30 16:28:04 by eouhrich         ###   ########.fr       */
+/*   Created: 2024/04/28 18:21:55 by eouhrich          #+#    #+#             */
+/*   Updated: 2024/04/30 19:11:09 by eouhrich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#ifndef FDF_BONUS_H
+# define FDF_BONUS_H
 
-int	ft_close(void)
-{
-	fdf_exiter(get_vars());
-	return (0);
-}
+# include "../fdf.h"
 
-int	handle_keys(int keycode, t_vars *garbage)
-{
-	t_vars	*vars;
-
-	(void)garbage;
-	vars = get_vars();
-	if (keycode == ESC)
-	{
-		mlx_destroy_window(vars->mlx, vars->win);
-		fdf_exiter(vars);
-	}
-	return (0);
-}
+#endif
