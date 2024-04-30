@@ -24,7 +24,7 @@ $(NAME_BONUS) : $(OFILES_BONUS)
 	$(CC) $(CFLAGS) $(INCLUDES)  -c $< -o $@
 
 clean :
-	$(RM) $(OFILES) $(BONUS_OFILES) $(SRC:.c=.o)
+	$(RM) $(OFILES) $(OFILES_BONUS) $(SRC:.c=.o)
 
 fclean : clean
 	$(RM) $(NAME)
