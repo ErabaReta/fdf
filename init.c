@@ -6,7 +6,7 @@
 /*   By: eouhrich <eouhrich@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 18:55:52 by eouhrich          #+#    #+#             */
-/*   Updated: 2024/04/30 16:29:25 by eouhrich         ###   ########.fr       */
+/*   Updated: 2024/05/01 21:14:40 by eouhrich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,23 @@ void	init_shape(t_vars *vars)
 
 t_vars	init_vars(t_3d_point **shape_3d, int height, int width)
 {
-	t_img_data	data;
 	t_vars		*vars;
 
 	vars = get_vars();
 	vars->mlx = mlx_init();
-	vars->win = mlx_new_window(vars->mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "fdf");
-	data.img = mlx_new_image(vars->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
-	data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel,
-			&data.line_length, &data.endian);
-	vars->data = data;
+	if (vars->mlx != NULL)
+	{
+		vars->win = mlx_new_window(vars->mlx, WIN_WIDTH, WIN_HEIGHT, "fdf");
+		vars->data.img = mlx_new_image(vars->mlx, WIN_WIDTH, WIN_HEIGHT);
+	}
+	if (vars->mlx == NULL || vars->win == NULL || vars->data.img == NULL)
+	{
+		ft_putstr_fd("Error: mlx failed\n", 2);
+		fdf_exiter(vars);
+	}
+	vars->data.addr = mlx_get_data_addr(vars->data.img,
+			&(vars->data.bits_per_pixel), &(vars->data.line_length),
+			&(vars->data.endian));
 	vars->width = width;
 	vars->height = height;
 	vars->shape_3d = shape_3d;

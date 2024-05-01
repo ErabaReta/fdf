@@ -6,7 +6,7 @@
 /*   By: eouhrich <eouhrich@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 18:21:55 by eouhrich          #+#    #+#             */
-/*   Updated: 2024/04/29 14:48:03 by eouhrich         ###   ########.fr       */
+/*   Updated: 2024/05/01 21:21:40 by eouhrich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 # include <unistd.h>
 # include <limits.h>
 //==
-# define WINDOW_HEIGHT 1000
-# define WINDOW_WIDTH 1000
+# define WIN_HEIGHT 1000
+# define WIN_WIDTH 1000
 //=== buttons ====
 # define ESC 53
 # define Q 12
@@ -107,7 +107,7 @@ int			ft_strncmp(const char *s1, const char *s2, size_t n);
 void		ft_str_tolower(char *str);
 //=
 int			check_height_width(char **chars_map, int *height, int *width);
-int			check_file_name(char *file);
+int			check_file_name(char *file, int ac);
 char		**map_file_to_chars(char *file);
 //=
 int			ft_abs(int nbr);

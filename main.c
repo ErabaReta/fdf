@@ -6,7 +6,7 @@
 /*   By: eouhrich <eouhrich@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 11:26:41 by eouhrich          #+#    #+#             */
-/*   Updated: 2024/04/30 16:30:12 by eouhrich         ###   ########.fr       */
+/*   Updated: 2024/05/01 21:21:52 by eouhrich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	my_mlx_pixel_put(t_img_data *data, int x, int y, int color)
 	int				offset;
 	unsigned int	*ptr;
 
-	if (y >= WINDOW_HEIGHT || x >= WINDOW_WIDTH || x < 0 || y < 0)
+	if (y >= WIN_HEIGHT || x >= WIN_WIDTH || x < 0 || y < 0)
 		return ;
 	offset = y * data->line_length + x * (data->bits_per_pixel / 8);
 	dst = data->addr + offset;
@@ -55,7 +55,7 @@ int	main(int ac, char **av)
 
 	height = 0;
 	width = 0;
-	if (ac > 2 || check_file_name(av[1]) == -1)
+	if (check_file_name(av[1], ac) == -1)
 		return (1);
 	chars_map = map_file_to_chars(av[1]);
 	if (chars_map == 0 || check_height_width(chars_map, &height, &width))

@@ -6,7 +6,7 @@
 /*   By: eouhrich <eouhrich@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 18:30:08 by eouhrich          #+#    #+#             */
-/*   Updated: 2024/04/30 16:49:44 by eouhrich         ###   ########.fr       */
+/*   Updated: 2024/05/01 21:20:26 by eouhrich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,13 @@ int	check_height_width(char **chars_map, int *height, int *width)
 	return (returned);
 }
 
-int	check_file_name(char *file)
+int	check_file_name(char *file, int ac)
 {
+	if (ac != 2)
+	{
+		ft_putstr_fd("Error: you should enter a map as arguement\n", 2);
+		return (-1);
+	}
 	if (ft_strlen(file) <= 4
 		|| ft_strncmp(&file[ft_strlen(file) - 4], ".fdf", 4) != 0)
 	{
@@ -62,6 +67,9 @@ char	**reader(int fd, char *str, char *tmp)
 		if (str == NULL)
 		{
 			ft_putstr_fd("Error: malloc failed to allocate\n", 2);
+			free(tmp);
+			free(str);
+			close(fd);
 			return (0);
 		}
 	}
@@ -86,7 +94,7 @@ char	**map_file_to_chars(char *file)
 	}
 	str = ft_strdup("");
 	tmp = (char *)malloc(sizeof(char) * 1000001);
-	if (file == NULL || tmp == NULL)
+	if (str == NULL || tmp == NULL)
 	{
 		ft_putstr_fd("Error: malloc failed to allocate\n", 2);
 		return (0);

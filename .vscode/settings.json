@@ -26,6 +26,7 @@
         "string_view": "c",
         "ios": "c",
         "sstream": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "fdf_bonus.h": "c"
     }
 }
