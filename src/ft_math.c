@@ -6,7 +6,7 @@
 /*   By: eouhrich <eouhrich@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 18:52:43 by eouhrich          #+#    #+#             */
-/*   Updated: 2024/04/29 13:30:13 by eouhrich         ###   ########.fr       */
+/*   Updated: 2024/05/01 18:52:08 by eouhrich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	line_between_2points(t_vars	*vars, t_2d_point point1,
 		return ;
 	y = ft_max(ft_min(point1.y, point2.y), 0);
 	while ((point2.y - point1.y) != 0
-		&& y <= ft_max(point1.y, point2.y) && y < WINDOW_HEIGHT)
+		&& y <= ft_max(point1.y, point2.y) && y < WIN_HEIGHT)
 	{
 		x = (((y - point1.y) * (point2.x - point1.x))
 				/ (point2.y - point1.y)) + point1.x;
@@ -50,7 +50,7 @@ void	line_between_2points(t_vars	*vars, t_2d_point point1,
 	}
 	x = ft_max(ft_min(point1.x, point2.x), 0);
 	while ((point2.x - point1.x) != 0
-		&& x <= ft_max(point1.x, point2.x) && x < WINDOW_WIDTH)
+		&& x <= ft_max(point1.x, point2.x) && x < WIN_WIDTH)
 	{
 		y = (((point2.y - point1.y) * (x - point1.x))
 				/ (point2.x - point1.x)) + point1.y;
