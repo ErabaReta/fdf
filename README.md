@@ -3,7 +3,7 @@ This project is about representing a landscape as a 3D object in which all surfa
 
 ## how it works:
 
-the program represent a model  in [isometric projection](en.wikipedia.org/wiki/Isometric_projection).
+the program represent a model  in [isometric projection](https://en.wikipedia.org/wiki/Isometric_projection).
 
 The coordinates of the landscape are stored in a .fdf file passed as a parameter to
 the program. Here is an example:
