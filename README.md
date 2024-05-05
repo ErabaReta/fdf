@@ -9,17 +9,29 @@ The coordinates of the landscape are stored in a .fdf file passed as a parameter
 the program. Here is an example:
 
 $>cat 42.fdf
+
 0 0 0  0  0  0  0  0  0 0 0 0  0  0  0  0  0  0 0
+
 0 0 0  0  0  0  0  0  0 0 0 0  0  0  0  0  0  0 0
+
 0 0 10 10 0  0  10 10 0 0 0 10 10 10 10 10 0  0 0
+
 0 0 10 10 0  0  10 10 0 0 0 0  0  0  0  10 10 0 0
+
 0 0 10 10 0  0  10 10 0 0 0 0  0  0  0  10 10 0 0
+
 0 0 10 10 10 10 10 10 0 0 0 0  10 10 10 10 0  0 0
+
 0 0 0  10 10 10 10 10 0 0 0 10 10 0  0  0  0  0 0
+
 0 0 0  0  0  0  10 10 0 0 0 10 10 0  0  0  0  0 0
+
 0 0 0  0  0  0  10 10 0 0 0 10 10 10 10 10 10 0 0
+
 0 0 0  0  0  0  0  0  0 0 0 0  0  0  0  0  0  0 0
+
 0 0 0  0  0  0  0  0  0 0 0 0  0  0  0  0  0  0 0
+
 $>
 
 Each number represents a point in space:
@@ -33,6 +45,5 @@ Each number represents a point in space:
 Executing your fdf program using the example file 42.fdf:
 
 $>./fdf 42.fdf
-$>
 
-Should render a landscape repersing it.
+Should render a landscape represinting it.
