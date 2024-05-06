@@ -47,3 +47,7 @@ Executing your fdf program using the example file 42.fdf:
 $>./fdf 42.fdf
 
 Should render a landscape represinting it.
+
+### note:
+
+>this program working only on macos system as it's using the minilibx graphics library which is based on the X server \(cocoa for our case\), I'll work on make in it crossover later..
