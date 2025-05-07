@@ -8,7 +8,8 @@ OFILES = $(CFILES:.c=.o) $(SRC:.c=.o)
 OFILES_BONUS = $(CFILES_BONUS:.c=.o) $(SRC:.c=.o)
 NAME = fdf
 NAME_BONUS = fdf_bonus
-MLX_FLAGS = -lmlx -framework OpenGL -framework AppKit  -lm
+# MLX_FLAGS = -lmlx -framework OpenGL -framework AppKit  -lm # Mac flags
+MLX_FLAGS = -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz  -lm # Mac linux
 INCLUDES = -I./ -I_bonus
 
 all : $(NAME)

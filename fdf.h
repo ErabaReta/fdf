@@ -22,25 +22,44 @@
 //==
 # define WIN_HEIGHT 1000
 # define WIN_WIDTH 1000
-//=== buttons ====
-# define ESC 53
-# define Q 12
-# define W 13
-# define A 0
-# define S 1
-# define Z 6
-# define X 7
-# define E 14
-# define R 15
-# define D 2
-# define F 3
-# define C 8
-# define V 9
-# define UP_ARROW 126
-# define DOWN_ARROW 125
-# define SPACE 49
-# define ENTER 36
-# define DELETE 51
+//=== linux buttons ====
+# define ESC 65307
+# define Q 113 //
+# define W 119 //
+# define A 97 //
+# define S 115 //
+# define Z 122 //
+# define X 120 //
+# define E 101 //
+# define R 114 //
+# define D 100 //
+# define F 102 //
+# define C 99 //
+# define V 118 //
+# define UP_ARROW 65362
+# define DOWN_ARROW 65364
+# define SPACE 32
+# define ENTER 65293
+# define DELETE 65288
+// //=== Macos buttons ====
+// # define ESC 53
+// # define Q 12
+// # define W 13
+// # define A 0
+// # define S 1
+// # define Z 6
+// # define X 7
+// # define E 14
+// # define R 15
+// # define D 2
+// # define F 3
+// # define C 8
+// # define V 9
+// # define UP_ARROW 126
+// # define DOWN_ARROW 125
+// # define SPACE 49
+// # define ENTER 36
+// # define DELETE 51
 //=== colors ===
 # define WHITE 0xffffff
 # define BROWN 0xCC6600
