@@ -36,6 +36,8 @@ void	init_shape(t_vars *vars)
 	vars->ztranslation = -8 * ((ft_max(vars->width, vars->height) / 13) + 1);
 }
 
+int key_release(int keycode, void *garbage);
+
 t_vars	init_vars(t_3d_point **shape_3d, int height, int width)
 {
 	t_vars		*vars;
@@ -61,6 +63,7 @@ t_vars	init_vars(t_3d_point **shape_3d, int height, int width)
 	vars->orthognal_type = 'i';
 	init_shape(vars);
 	mlx_hook(vars->win, 2, 1L << 0, handle_keys, vars);
+	mlx_hook(vars->win, 3, 1L << 1, key_release, NULL);
 	mlx_hook(vars->win, 17, 1L << 0, ft_close, vars);
 	return (*vars);
 }

@@ -100,9 +100,18 @@ typedef struct s_vars
 	float		xangle;
 	float		yangle;
 	float		zangle;
-	int			xtranslation;
-	int			ytranslation;
-	int			ztranslation;
+	float			xtranslation;
+	float			ytranslation;
+	float			ztranslation;
+	// ====
+	int	update_xangle;
+	int	update_yangle;
+	int	update_zangle;
+	
+	int	update_xtranslation;
+	int	update_ytranslation;
+	int	update_ztranslation;
+	// ====
 	float		zoom;
 	char		projection;
 	char		orthognal_type;	

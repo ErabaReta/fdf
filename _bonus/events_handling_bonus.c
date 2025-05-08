@@ -21,29 +21,53 @@ int	ft_close(void)
 void	handle_shape_events(int keycode, t_vars *vars)
 {
 	if (keycode == Q)
-		vars->xangle += (M_PI / 180);
+		vars->update_xangle = 1;
 	else if (keycode == W)
-		vars->xangle -= (M_PI / 180);
+		vars->update_xangle = -1;
 	else if (keycode == A)
-		vars->yangle += (M_PI / 180);
+		vars->update_yangle = 1;
 	else if (keycode == S)
-		vars->yangle -= (M_PI / 180);
+		vars->update_yangle = -1;
 	else if (keycode == Z)
-		vars->zangle += (M_PI / 180);
+		vars->update_zangle = 1;
 	else if (keycode == X)
-		vars->zangle -= (M_PI / 180);
+		vars->update_zangle = -1;
 	else if (keycode == E)
-		vars->xtranslation += ((ft_max(vars->width, vars->height) / 13) + 1);
+		vars->update_xtranslation = 1;
 	else if (keycode == R)
-		vars->xtranslation -= ((ft_max(vars->width, vars->height) / 13) + 1);
+		vars->update_xtranslation = -1;
 	else if (keycode == D)
-		vars->ytranslation += ((ft_max(vars->width, vars->height) / 13) + 1);
+		vars->update_ytranslation = 1;
 	else if (keycode == F)
-		vars->ytranslation -= ((ft_max(vars->width, vars->height) / 13) + 1);
+		vars->update_ytranslation = -1;
 	else if (keycode == C)
-		vars->ztranslation += ((ft_max(vars->width, vars->height) / 13) + 1);
+		vars->update_ztranslation = 1;
 	else if (keycode == V)
-		vars->ztranslation -= ((ft_max(vars->width, vars->height) / 13) + 1);
+		vars->update_ztranslation = -1;
+	// if (keycode == Q)
+	// 	vars->xangle += ROTATION_ANGLE;
+	// else if (keycode == W)
+	// 	vars->xangle -= ROTATION_ANGLE;
+	// else if (keycode == A)
+	// 	vars->yangle += ROTATION_ANGLE;
+	// else if (keycode == S)
+	// 	vars->yangle -= ROTATION_ANGLE;
+	// else if (keycode == Z)
+	// 	vars->zangle += ROTATION_ANGLE;
+	// else if (keycode == X)
+	// 	vars->zangle -= ROTATION_ANGLE;
+	// else if (keycode == E)
+	// 	vars->xtranslation += TRANSLATION_DIST;
+	// else if (keycode == R)
+	// 	vars->xtranslation -= TRANSLATION_DIST;
+	// else if (keycode == D)
+	// 	vars->ytranslation += TRANSLATION_DIST;
+	// else if (keycode == F)
+	// 	vars->ytranslation -= TRANSLATION_DIST;
+	// else if (keycode == C)
+	// 	vars->ztranslation += TRANSLATION_DIST;
+	// else if (keycode == V)
+	// 	vars->ztranslation -= TRANSLATION_DIST;
 }
 
 void	handle_display_events(int keycode, t_vars *vars)
@@ -117,8 +141,39 @@ int	handle_keys(int keycode, t_vars *garbage)
 		vars->zoom -= 0.5;
 	else if (keycode == SPACE || keycode == ENTER || keycode == DELETE)
 		handle_display_events(keycode, vars);
-	else
-		return (0);
-	normalise_and_rerender(vars);
+	// else
+	return (0);
+	// normalise_and_rerender(vars);
+	// return (0);
+}
+
+
+int key_release(int keycode, void *garbage)
+{
+	(void)garbage;
+	if (keycode == Q)
+		get_vars()->update_xangle = 0;
+	else if (keycode == W)
+		get_vars()->update_xangle = 0;
+	else if (keycode == A)
+		get_vars()->update_yangle = 0;
+	else if (keycode == S)
+		get_vars()->update_yangle = 0;
+	else if (keycode == Z)
+		get_vars()->update_zangle = 0;
+	else if (keycode == X)
+		get_vars()->update_zangle = 0;
+	else if (keycode == E)
+		get_vars()->update_xtranslation = 0;
+	else if (keycode == R)
+		get_vars()->update_xtranslation = 0;
+	else if (keycode == D)
+		get_vars()->update_ytranslation = 0;
+	else if (keycode == F)
+		get_vars()->update_ytranslation = 0;
+	else if (keycode == C)
+		get_vars()->update_ztranslation = 0;
+	else if (keycode == V)
+		get_vars()->update_ztranslation = 0;
 	return (0);
 }
