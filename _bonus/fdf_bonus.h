@@ -14,5 +14,15 @@
 # define FDF_BONUS_H
 
 # include "../fdf.h"
+#include <stdio.h>
+#include <time.h>
+# ifndef CLOCK_MONOTONIC
+# define CLOCK_MONOTONIC 1
+#endif
+
+# define ROTATION_ANGLE ((M_PI / 180.0) / 10)
+# define TRANSLATION_DIST ((ft_min(get_vars()->width, get_vars()->height) / 200))
+void	normalise_and_rerender(t_vars *vars);
+
 
 #endif

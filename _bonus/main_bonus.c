@@ -33,6 +33,21 @@ t_vars	*get_vars(void)
 	return (&vars);
 }
 
+// void	*ft_memset(void *b, int c, size_t len)
+// {
+// 	size_t			i;
+// 	unsigned char	*tmp_str;
+
+// 	tmp_str = (unsigned char *)b;
+// 	i = 0;
+// 	while (i < len)
+// 	{
+// 		tmp_str[i] = (unsigned char)c;
+// 		i++;
+// 	}
+// 	return (b);
+// }
+
 void	clear_image(t_vars *vars)
 {
 	int	i;
@@ -49,14 +64,55 @@ void	clear_image(t_vars *vars)
 		}
 		i++;
 	}
+	// ft_memset(vars->data.addr, 0, (size_t )(WIN_HEIGHT * WIN_WIDTH) * (vars->data.bits_per_pixel / 8));
 }
+
+// void print_fps(void)
+// {
+// 	static struct timespec last_time ; 
+//     struct timespec current_time;
+//     static int frame_count = 0;
+	
+//     if (last_time.tv_sec == 0 && last_time.tv_nsec == 0)
+// 		clock_gettime(CLOCK_MONOTONIC, &last_time);
+//     frame_count++;
+//     clock_gettime(CLOCK_MONOTONIC, &current_time);
+//     double elapsed = (current_time.tv_sec - last_time.tv_sec) +
+//                      (current_time.tv_nsec - last_time.tv_nsec) / 1000000000.0;
+// 	if (elapsed >= 1.0)
+// 	{
+// 		fprintf(stderr, "FPS: %d\n", frame_count);
+// 		frame_count = 0;
+// 		last_time = current_time;
+//     }
+// }
+
+void update_attributes(void)
+{
+	get_vars()->xangle += get_vars()->update_xangle * ROTATION_ANGLE;
+	get_vars()->yangle += get_vars()->update_yangle * ROTATION_ANGLE;
+	get_vars()->zangle += get_vars()->update_zangle * ROTATION_ANGLE;
+
+	get_vars()->xtranslation += get_vars()->update_xtranslation * TRANSLATION_DIST;
+	get_vars()->ytranslation += get_vars()->update_ytranslation * TRANSLATION_DIST;
+	get_vars()->ztranslation += get_vars()->update_ztranslation * TRANSLATION_DIST;
+}
+
+int loop(void)
+{
+	update_attributes();
+	normalise_and_rerender(get_vars());
+	// print_fps();
+    return 0;
+}
+
 
 void	fdf(t_3d_point **shape, int height, int width)
 {
 	t_vars	vars;
 
 	vars = init_vars(shape, height, width);
-	draw_map(&vars);
+	mlx_loop_hook(vars.mlx, loop, NULL);
 	mlx_loop(vars.mlx);
 }
 
