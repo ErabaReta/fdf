@@ -5,9 +5,13 @@
 ## 🖼️ Project Overview
 
 The program parses a grid of height values from a `.fdf` file and visualizes it as a 3D wireframe model. Each point's elevation influences its position in the 3D space, creating a relief map.
+
 Each number represents a point in space:
+
 • The horizontal position corresponds to its axis.
+
 • The vertical position corresponds to its ordinate.
+
 • The value corresponds to its altitude.
 
 ## 🚀 Features
