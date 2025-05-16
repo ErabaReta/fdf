@@ -1,53 +1,40 @@
-# fdf
-This project is about representing a landscape as a 3D object in which all surfaces are outlined in lines.
+# FdF – 3D Wireframe Landscape Renderer
 
-## how it works:
+**FdF** (short for *Fil de Fer*, French for "wireframe") is a graphics project developed as part of the 42 School curriculum. It reads a `.fdf` file containing elevation data and renders a 3D wireframe model of the landscape using ![isometric projection](https://en.wikipedia.org/wiki/Isometric_projection).
 
-the program represent a model  in [isometric projection](https://en.wikipedia.org/wiki/Isometric_projection).
+## 🖼️ Project Overview
 
-The coordinates of the landscape are stored in a .fdf file passed as a parameter to
-the program. Here is an example:
+The program parses a grid of height values from a `.fdf` file and visualizes it as a 3D wireframe model. Each point's elevation influences its position in the 3D space, creating a relief map.
 
-$>cat 42.fdf
+## 🚀 Features
 
-0 0 0  0  0  0  0  0  0 0 0 0  0  0  0  0  0  0 0
+- Isometric projection rendering  
+- perspective projection rendering  
+- Dynamic zoom and pan controls  
+- Elevation scaling  
+- Color gradients based on elevation  
+- Keyboard controls for interaction  
 
-0 0 0  0  0  0  0  0  0 0 0 0  0  0  0  0  0  0 0
+## 🛠️ Installation
 
-0 0 10 10 0  0  10 10 0 0 0 10 10 10 10 10 0  0 0
+### Prerequisites
 
-0 0 10 10 0  0  10 10 0 0 0 0  0  0  0  10 10 0 0
+- A Unix-like operating system (Linux or macOS)
+- `gcc` compiler
+- `make` utility (if you are welling to compile using the Makefile)
+- MiniLibX library
 
-0 0 10 10 0  0  10 10 0 0 0 0  0  0  0  10 10 0 0
+### Building the Project
 
-0 0 10 10 10 10 10 10 0 0 0 0  10 10 10 10 0  0 0
+```bash
+git clone https://github.com/ErabaReta/fdf.git
+cd fdf
+make
+```
+## 📈 Usage
 
-0 0 0  10 10 10 10 10 0 0 0 10 10 0  0  0  0  0 0
-
-0 0 0  0  0  0  10 10 0 0 0 10 10 0  0  0  0  0 0
-
-0 0 0  0  0  0  10 10 0 0 0 10 10 10 10 10 10 0 0
-
-0 0 0  0  0  0  0  0  0 0 0 0  0  0  0  0  0  0 0
-
-0 0 0  0  0  0  0  0  0 0 0 0  0  0  0  0  0  0 0
-
-$>
-
-Each number represents a point in space:
-
-• The horizontal position corresponds to its axis.
-
-• The vertical position corresponds to its ordinate.
-
-• The value corresponds to its altitude.
-
-Executing your fdf program using the example file 42.fdf:
-
-$>./fdf 42.fdf
-
-Should render a landscape represinting it.
-
-### note:
-
->this program working only on macos system as it's using the minilibx graphics library which is based on the X server \(cocoa for our case\), I'll work on make in it crossover later..
+Run the program with a .fdf file as an argument:
+```bash
+./fdf path/to/map.fdf
+```
+Sample maps are available in the test_maps/ directory.
