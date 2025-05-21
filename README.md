@@ -27,7 +27,7 @@ Each number represents a point in space:
 
 ### Prerequisites
 
-- A Unix-like operating system (Linux or macOS)
+- A Unix-like operating system (Linux or macOS) ... if you dont have it yet you can follow this doc to install it: [42docs](https://harm-smits.github.io/42docs/libs/minilibx/getting_started.html#compilation-on-linux)
 - `gcc` compiler
 - `make` utility (if you are welling to compile using the Makefile)
 - MiniLibX library
