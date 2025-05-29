@@ -27,10 +27,10 @@ Each number represents a point in space:
 
 ### Prerequisites
 
-- A Unix-like operating system (Linux or macOS) ... if you dont have it yet you can follow this doc to install it: [42docs](https://harm-smits.github.io/42docs/libs/minilibx/getting_started.html#compilation-on-linux)
+- A Unix-like operating system (Linux or macOS)
 - `gcc` compiler
 - `make` utility (if you are welling to compile using the Makefile)
-- MiniLibX library
+- MiniLibX library ... if you dont have it yet you can follow this doc to install it: [42docs](https://harm-smits.github.io/42docs/libs/minilibx/getting_started.html#compilation-on-linux)
 
 ### Building the Project
 
